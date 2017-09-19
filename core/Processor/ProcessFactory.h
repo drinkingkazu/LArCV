@@ -19,6 +19,9 @@
 #include "Base/larcv_base.h"
 #include "Base/larbys.h"
 #include "ProcessBase.h"
+
+#include <mutex>
+static std::mutex __procfactory_mtx;
 namespace larcv {
 
   /**
@@ -52,8 +55,13 @@ namespace larcv {
     /// Default dtor
     ~ProcessFactory() {_factory_map.clear();}
     /// Static sharable instance getter
-    static ProcessFactory& get()
-    { if(!_me) _me = new ProcessFactory; return *_me; }
+    inline static ProcessFactory& get()
+    {
+      __procfactory_mtx.lock();
+      if(!_me) _me = new ProcessFactory; 
+      __procfactory_mtx.unlock();
+      return *_me;
+    }
     /// Factory registration method (should be called by global factory instance in algorithm header)
     void add_factory(const std::string name, larcv::ProcessFactoryBase* factory)
     { _factory_map[name] = factory; }

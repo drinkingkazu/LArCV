@@ -2,6 +2,8 @@
 #define __LARCVLOGGER_CXX__
 
 #include "larcv_logger.h"
+#include <mutex>
+std::mutex __logger_mtx;
 namespace larcv {
 
   logger *logger::_shared_logger = nullptr;
@@ -12,8 +14,10 @@ namespace larcv {
   
   std::ostream& logger::send(const msg::Level_t level) const
   {
+    __logger_mtx.lock();
     (*_ostrm)  << msg::kStringPrefix[level].c_str()
 	       << "\033[0m ";
+    __logger_mtx.unlock();
     return (*_ostrm);
   }
   
@@ -47,8 +51,11 @@ namespace larcv {
   
   logger& logger::get_shared()
   {
+    __logger_mtx.lock();
     if(!_shared_logger) _shared_logger = new logger("GLOBAL");
+    __logger_mtx.unlock();
     return *_shared_logger;
+
   }
 }
 #endif

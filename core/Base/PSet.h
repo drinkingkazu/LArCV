@@ -43,7 +43,7 @@ namespace larcv {
     {}
 
     /// name getter
-    const std::string& name() const { return _name; }
+    inline const std::string& name() const { return _name; }
     
     /// operator override
     inline bool operator==(const PSet& rhs) const
@@ -71,8 +71,11 @@ namespace larcv {
     inline bool operator!=(const PSet& rhs) const
     { return !((*this) == rhs); }
 
+    /// rename method
+    inline void rename(std::string name) { _name = name; }
+
     /// clear method
-    void clear() 
+    inline void clear() 
     { _data_value.clear(); _data_pset.clear(); }
 
     /// Set data contents

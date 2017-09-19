@@ -29,7 +29,7 @@ namespace larcv {
   public:
     
     /// Default constructor
-    ProcessDriver(std::string name);
+    ProcessDriver(std::string name="ProcessDriver");
     
     /// Default destructor
     ~ProcessDriver(){}
@@ -74,6 +74,8 @@ namespace larcv {
     { _io.set_id(run,subrun,event); }
 
     size_t get_tree_index( size_t entry ) const;
+
+    inline bool processing() const { return _processing; }
 
   private:
 

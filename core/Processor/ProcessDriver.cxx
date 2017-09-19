@@ -113,29 +113,34 @@ namespace larcv {
     configure(cfg);
   }
 
-  void ProcessDriver::configure(const PSet& cfg) 
+  void ProcessDriver::configure(const PSet& cfg)
   {
+    reset();
+
     // check io config exists
-    if(!cfg.contains_pset("IOManager")) {
+    LARCV_INFO() << "Retrieving IO config" << std::endl;
+    PSet io_config("Empty");
+    if(cfg.contains_pset("IOManager"))
+      io_config = cfg.get<larcv::PSet>("IOManager");
+    else if(cfg.contains_pset(std::string(name() + "IOManager")))
+      io_config = cfg.get<larcv::PSet>(name() + "IOManager");
+    else {
       LARCV_CRITICAL() << "IOManager config not found!" << std::endl
 		       << cfg.dump()
 		       << std::endl;
       throw larbys();
     }
+    
     // check process config exists
+    LARCV_INFO() << "Retrieving ProcessList" << std::endl;
     if(!cfg.contains_pset("ProcessList")) {
       LARCV_CRITICAL() << "ProcessList config not found!" << std::endl
 		       << cfg.dump()
 		       << std::endl;
       throw larbys();
     }
-
-    reset();
-    LARCV_INFO() << "Retrieving IO config" << std::endl;
-    auto const io_config = cfg.get<larcv::PSet>("IOManager");
-    LARCV_INFO() << "Retrieving ProcessList" << std::endl;
     auto const proc_config = cfg.get<larcv::PSet>("ProcessList");
-
+    
     // Prepare IO manager
     LARCV_INFO() << "Configuring IO" << std::endl;
     _io = IOManager(io_config);

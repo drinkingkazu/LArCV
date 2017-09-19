@@ -6,6 +6,9 @@
 #include "ProductMap.h"
 #include "DataProductFactory.h"
 #include <algorithm>
+
+#include <mutex>
+std::mutex __ioman_mtx;
 namespace larcv {
 
   IOManager::IOManager(IOMode_t mode, std::string name)
@@ -534,6 +537,7 @@ namespace larcv {
 
   EventBase* IOManager::get_data(const size_t id)
   {
+    __ioman_mtx.lock();
     LARCV_DEBUG() << "start" << std::endl;
 
     if(id >= _product_ctr) {
@@ -560,7 +564,7 @@ namespace larcv {
 	throw larbys();
       }
     }
-
+    __ioman_mtx.unlock();    
     return _product_ptr_v[id];
   }
 
