@@ -1,6 +1,8 @@
 #ifndef DLINTERFACETYPES_H
 #define DLINTERFACETYPES_H
 
+#include <string>
+
 namespace larcv {
 
   enum ThreadFillerState_t {
@@ -19,6 +21,8 @@ namespace larcv {
     kBatchDataDouble,
     kBatchDataString
   };
+
+  std::string BatchDataTypeName(BatchDataType_t type);
 
   enum class BatchDataState_t {
     kBatchStateUnknown,

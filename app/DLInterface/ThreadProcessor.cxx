@@ -431,12 +431,15 @@ namespace larcv {
 
       // only-once-operation among all threads: initialize storage
       if(thread_id) continue;
+      _batch_filler_id_v.clear();
+      _batch_data_type_v.clear();
       for(size_t pid=0; pid<_process_name_v.size(); ++pid) {
 	auto proc_ptr = driver->process_ptr(pid);
 	if(!(proc_ptr->is("BatchFiller"))) continue;
-	
+	_batch_filler_id_v.push_back(pid);
+	_batch_data_type_v.push_back( ((BatchHolder*)(proc_ptr))->data_type() );
 	auto const& name = _process_name_v[pid];
-	switch( ((BatchHolder*)(proc_ptr))->data_type() ) {
+	switch( _batch_data_type_v.back() ) {
 	case BatchDataType_t::kBatchDataChar:
 	  BatchDataStorageFactory<char>::get_writeable().make_storage(name,_num_batch_storage); break;
 	case BatchDataType_t::kBatchDataShort:

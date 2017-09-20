@@ -9,6 +9,7 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
+#pragma link C++ function larcv::BatchDataTypeName(BatchDataType_t);
 #pragma link C++ class larcv::ThreadProcessor;
 #pragma link C++ class larcv::BatchData<char>+;
 #pragma link C++ class larcv::BatchData<short>+;
