@@ -1,14 +1,14 @@
 /**
  * \file BatchData.h
  *
- * \ingroup DLInterface
+ * \ingroup ThreadIO
  * 
  * \brief Class def header for a class BatchData
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DLInterface
+/** \addtogroup ThreadIO
 
     @{*/
 #ifndef BATCHDATA_H
@@ -16,7 +16,7 @@
 
 #include <iostream>
 #include <vector>
-#include "DLInterfaceTypes.h"
+#include "ThreadIOTypes.h"
 
 namespace larcv {
   /**

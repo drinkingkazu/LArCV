@@ -1,21 +1,21 @@
 /**
  * \file BatchHolder.h
  *
- * \ingroup Package_Name
+ * \ingroup ThreadIO
  * 
  * \brief Class def header for a class BatchHolder
  *
  * @author kazuhiro
  */
 
-/** \addtogroup Package_Name
+/** \addtogroup ThreadIO
 
     @{*/
 #ifndef __BATCHHOLDER_H__
 #define __BATCHHOLDER_H__
 
 #include "Processor/ProcessBase.h"
-#include "DLInterfaceTypes.h"
+#include "ThreadIOTypes.h"
 namespace larcv {
   class ThreadProcessor;
 

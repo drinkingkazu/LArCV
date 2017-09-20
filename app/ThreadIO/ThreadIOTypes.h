@@ -1,5 +1,5 @@
-#ifndef DLINTERFACETYPES_H
-#define DLINTERFACETYPES_H
+#ifndef THREADIOTYPES_H
+#define THREADIOTYPES_H
 
 #include <string>
 

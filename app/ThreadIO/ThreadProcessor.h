@@ -1,21 +1,21 @@
 /**
  * \file ThreadProcessor.h
  *
- * \ingroup APICaffe
+ * \ingroup ThreadIO
  *
  * \brief Class def header for a class ThreadProcessor
  *
  * @author kazuhiro
  */
 
-/** \addtogroup APICaffe
+/** \addtogroup ThreadIO
 
     @{*/
 #ifndef THREADPROCESSOR_H
 #define THREADPROCESSOR_H
 
 #include "Processor/ProcessDriver.h"
-#include "DLInterfaceTypes.h"
+#include "ThreadIOTypes.h"
 #include <thread>
 
 namespace larcv {

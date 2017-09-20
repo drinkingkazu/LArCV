@@ -1,7 +1,7 @@
-#ifndef DLINTERFACETYPES_CXX
-#define DLINTERFACETYPES_CXX
+#ifndef THREADIOTYPES_CXX
+#define THREADIOTYPES_CXX
 
-#include "DLInterfaceTypes.h"
+#include "ThreadIOTypes.h"
 
 namespace larcv{
 

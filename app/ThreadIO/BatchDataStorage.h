@@ -1,14 +1,14 @@
 /**
  * \file BatchDataStorage.h
  *
- * \ingroup DLInterface
+ * \ingroup ThreadIO
  * 
  * \brief Class def header for a class BatchDataStorage
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DLInterface
+/** \addtogroup ThreadIO
 
     @{*/
 #ifndef BATCHDATASTORAGE_H
