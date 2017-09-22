@@ -19,6 +19,7 @@ namespace larcv {
   void BatchFillerImage2D::configure(const PSet& cfg)
   {
     LARCV_DEBUG() << "start" << std::endl;
+    _caffe_mode = cfg.get<bool>("CaffeMode");
     _image_producer = cfg.get<std::string>("ImageProducer");
     
     _slice_v = cfg.get<std::vector<size_t> >("Channels",_slice_v);
@@ -96,9 +97,9 @@ namespace larcv {
     size_t caffe_idx = 0;
     for(size_t row=0; row<_rows; ++row) {
       for(size_t col=0; col<_cols; ++col) {
-        _caffe_idx_to_img_idx[caffe_idx] = col*_rows + row;
-        _mirror_caffe_idx_to_img_idx[caffe_idx] = (_cols-col-1)*_rows + row;
-        ++caffe_idx;
+	_caffe_idx_to_img_idx[caffe_idx] = col*_rows + row;
+	_mirror_caffe_idx_to_img_idx[caffe_idx] = (_cols-col-1)*_rows + row;
+	++caffe_idx;
       }
     }
 
@@ -168,10 +169,17 @@ namespace larcv {
 
       std::vector<int> dim;
       dim.resize(4);
-      dim[0] = batch_size();
-      dim[1] = _num_channels;
-      dim[2] = _rows;
-      dim[3] = _cols;
+      if(_caffe_mode) {
+	dim[0] = batch_size();
+	dim[1] = _num_channels;
+	dim[2] = _rows;
+	dim[3] = _cols;
+      }else{
+	dim[0] = batch_size();
+	dim[1] = _rows;
+	dim[2] = _cols;
+	dim[3] = _num_channels;
+      }
       this->set_dim(dim);
     }
     else
@@ -206,23 +214,33 @@ namespace larcv {
         auto const& input_image = (_crop_image ? _cropper.crop(input_img2d) : input_img2d.as_vector());
 
         size_t caffe_idx=0;
-        size_t output_idx = ch * _rows * _cols;
+        size_t target_idx = ch * _rows * _cols;
+	
+        for(size_t caffe_idx=0; caffe_idx < (_rows*_cols); ++caffe_idx) {
 
-        for(size_t row=0; row<_rows; ++row) {
-          for(size_t col=0; col<_cols; ++col) {
-          
-            if(mirror_image)
-
-              _entry_data[output_idx] = input_image[_mirror_caffe_idx_to_img_idx[caffe_idx]];
-
-            else
-
-              _entry_data[output_idx] = input_image[_caffe_idx_to_img_idx[caffe_idx]];
-
-            ++output_idx;
-            ++caffe_idx;
+	  if(_caffe_mode) {
+	    
+	    if(mirror_image)
+	      
+	      _entry_data[target_idx] = input_image[_mirror_caffe_idx_to_img_idx[caffe_idx]];
+	    
+	    else
+	      
+	      _entry_data[target_idx] = input_image[_caffe_idx_to_img_idx[caffe_idx]];
+	    
+	  }else{
+	    
+	    if(mirror_image)
+	      
+	      _entry_data[caffe_idx * _num_channels + ch] = input_image[_mirror_caffe_idx_to_img_idx[caffe_idx]];
+	    
+	    else
+	      
+	      _entry_data[caffe_idx * _num_channels + ch] = input_image[_caffe_idx_to_img_idx[caffe_idx]];		
+	    
+	  }
+	  ++target_idx;
         }
-      }
     }
 
     // record the entry data

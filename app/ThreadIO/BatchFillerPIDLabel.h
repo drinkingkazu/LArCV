@@ -1,14 +1,14 @@
 /**
  * \file BatchFillerPIDLabel.h
  *
- * \ingroup Package_Name
+ * \ingroup ThreadIO
  * 
  * \brief Class def header for a class BatchFillerPIDLabel
  *
  * @author kazuhiro
  */
 
-/** \addtogroup Package_Name
+/** \addtogroup ThreadIO
 
     @{*/
 #ifndef __BATCHFILLERPIDLABEL_H__
@@ -24,7 +24,7 @@ namespace larcv {
      User defined class BatchFillerPIDLabel ... these comments are used to generate
      doxygen documentation!
   */
-  class BatchFillerPIDLabel : public BatchFillerTemplate<int> {
+  class BatchFillerPIDLabel : public BatchFillerTemplate<float> {
 
   public:
     
@@ -46,12 +46,11 @@ namespace larcv {
 
     void finalize();
 
-    //BatchDataType_t data_type() const { return BatchDataType_t::kBatchDataInt; }
-    
   private:
     std::string _roi_producer;
     std::vector<size_t> _roitype_to_class;
-    std::vector<int> _entry_data;
+    std::vector<float> _entry_data;
+    size_t _num_class;
   };
 
   /**

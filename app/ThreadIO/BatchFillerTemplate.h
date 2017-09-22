@@ -1,14 +1,14 @@
 /**
  * \file BatchFillerTemplate.h
  *
- * \ingroup Package_Name
+ * \ingroup ThreadIO
  * 
  * \brief Class def header for a class BatchFillerTemplate
  *
  * @author kazuhiro
  */
 
-/** \addtogroup Package_Name
+/** \addtogroup ThreadIO
 
     @{*/
 #ifndef __BATCHFILLERTEMPLATE_H__

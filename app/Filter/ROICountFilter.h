@@ -45,6 +45,7 @@ namespace larcv {
 
     std::string _roi_producer;
     size_t _max_roi_count;
+    size_t _min_roi_count;
     std::vector<size_t> _roi_count_v;
   };
 

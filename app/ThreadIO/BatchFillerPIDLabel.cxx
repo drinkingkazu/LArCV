@@ -12,7 +12,7 @@ namespace larcv {
   static BatchFillerPIDLabelProcessFactory __global_BatchFillerPIDLabelProcessFactory__;
 
   BatchFillerPIDLabel::BatchFillerPIDLabel(const std::string name)
-    : BatchFillerTemplate<int>(name)
+    : BatchFillerTemplate<float>(name)
   {}
 
   void BatchFillerPIDLabel::configure(const PSet& cfg)
@@ -24,6 +24,7 @@ namespace larcv {
       LARCV_CRITICAL() << "ClassTypeList needed to define classes!" << std::endl;
       throw larbys();
     }
+    _num_class = type_to_class.size();
     _roitype_to_class.clear();
     _roitype_to_class.resize(kROITypeMax,kINVALID_SIZE);
     for(size_t i=0; i<type_to_class.size(); ++i) {
@@ -71,7 +72,7 @@ namespace larcv {
     if(batch_data().dim().empty()) {
       std::vector<int> dim(2);
       dim[0] = batch_size();
-      dim[1] = 1;
+      dim[1] = _num_class;
       set_dim(dim);
     }
 
@@ -96,8 +97,9 @@ namespace larcv {
       throw larbys();
     }
 
-    _entry_data.resize(1);
-    _entry_data[0] = (float)(_roitype_to_class[roi_type]);
+    _entry_data.resize(_num_class,0);
+    for(auto& v : _entry_data) v = 0;
+    _entry_data[_roitype_to_class[roi_type]] = 1.;
     set_entry_data(_entry_data);
 
     return true;

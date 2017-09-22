@@ -96,6 +96,9 @@ namespace larcv {
     inline const std::vector<larcv::BatchDataType_t>& batch_types() const
     { return _batch_data_type_v; }
 
+    inline size_t num_batch_storage() const
+    { return _num_batch_storage; }
+
   private:
 
     void terminate_threads();

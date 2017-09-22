@@ -1,14 +1,14 @@
 /**
  * \file BatchFillerImage2D.h
  *
- * \ingroup Package_Name
+ * \ingroup ThreadIO
  * 
  * \brief Class def header for a class BatchFillerImage2D
  *
  * @author kazuhiro
  */
 
-/** \addtogroup Package_Name
+/** \addtogroup ThreadIO
 
     @{*/
 #ifndef __BATCHFILLERIMAGE2D_H__
@@ -45,8 +45,6 @@ namespace larcv {
 
     const std::vector<bool>& mirrored() const { return _mirrored; }
 
-    //inline BatchDataType_t data_type() const { return BatchDataType_t::kBatchDataFloat; }
-
   protected:
 
     void _batch_begin_();
@@ -56,7 +54,8 @@ namespace larcv {
 
     size_t set_image_size(const EventImage2D* image_data);
     void assert_dimension(const EventImage2D* image_data) const;
-
+    
+    bool _caffe_mode;
     std::string _image_producer;
     size_t _rows;
     size_t _cols;

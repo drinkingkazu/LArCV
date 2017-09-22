@@ -1,14 +1,14 @@
 /**
  * \file BatchFillerVoxel3D.h
  *
- * \ingroup Package_Name
+ * \ingroup ThreadIO
  * 
  * \brief Class def header for a class BatchFillerVoxel3D
  *
  * @author kazuhiro
  */
 
-/** \addtogroup Package_Name
+/** \addtogroup ThreadIO
 
     @{*/
 #ifndef __BATCHFILLERVOXEL3D_H__

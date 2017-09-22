@@ -291,7 +291,7 @@ namespace larcv {
       return;
     }
     _batch_state_v[storage_id] = BatchDataState_t::kBatchStateReleased;
-    LARCV_NORMAL() << "Storage data (id=" << storage_id <<") released" << std::endl;
+    LARCV_INFO() << "Storage data (id=" << storage_id <<") released" << std::endl;
   }
 
   void ThreadProcessor::configure(const PSet& orig_cfg)
@@ -503,7 +503,7 @@ namespace larcv {
       break;
     }
     if(thread_id == kINVALID_SIZE) {
-      LARCV_NORMAL() << "Skip running next batch: no thread is ready to take a job" << std::endl;
+      LARCV_INFO() << "Skip running next batch: no thread is ready to take a job" << std::endl;
       return false;
     }
 
@@ -531,11 +531,11 @@ namespace larcv {
     if(start_entry == kINVALID_SIZE)
       start_entry = 0;
     
-    LARCV_NORMAL() << "Instantiating thread ID " << thread_id
-		   << " (exec counter " << _thread_exec_ctr_v[thread_id] << ")"
-		   << " for storage id " << storage_id
-		   << " (from entry " << start_entry
-		   << ", for " << nentries << " entries)" << std::endl;
+    LARCV_INFO() << "Instantiating thread ID " << thread_id
+		 << " (exec counter " << _thread_exec_ctr_v[thread_id] << ")"
+		 << " for storage id " << storage_id
+		 << " (from entry " << start_entry
+		 << ", for " << nentries << " entries)" << std::endl;
 
     _next_entry = start_entry + nentries;
     

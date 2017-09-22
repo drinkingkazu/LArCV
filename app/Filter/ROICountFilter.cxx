@@ -16,6 +16,7 @@ namespace larcv {
   {
     _roi_producer = cfg.get<std::string>("ROIProducer");
     _max_roi_count = cfg.get<size_t>("MaxROICount");
+    _min_roi_count = cfg.get<size_t>("MinROICount",0);
   }
 
   void ROICountFilter::initialize()
@@ -34,7 +35,7 @@ namespace larcv {
       _roi_count_v.resize(roi_v.size()+1,0);
     _roi_count_v[roi_v.size()] += 1;
 
-    return (ev_roi->ROIArray().size() <= _max_roi_count);
+    return (_min_roi_count <= ev_roi->ROIArray().size() && ev_roi->ROIArray().size() <= _max_roi_count);
   }
 
   void ROICountFilter::finalize()
