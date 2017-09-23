@@ -7,20 +7,6 @@ for d in os.listdir(os.environ['LARCV_BUILDDIR']):
     dirs.append(d)
 libs=[x for x in commands.getoutput('larcv-config --libs').split() if not x.startswith('-llarcv')]
 libs+= commands.getoutput('root-config --libs').split()
-if 'LARLITE_BASEDIR' in os.environ:
-    libs+= commands.getoutput('larlite-config --libs').split()
-    if 'LAROPENCV_BASEDIR' in os.environ:
-        libs += [' -lLArOpenCV_Core']
-        libs += [' -lLArOpenCV_ImageClusterBase']
-        libs += [' -lLArOpenCV_ImageClusterAlgoData']
-        libs += [' -lLArOpenCV_ImageClusterAlgoFunction']
-        libs += [' -lLArOpenCV_ImageClusterAlgoClass']
-        libs += [' -lLArOpenCV_ImageClusterAlgoModule']
-        libs += [' -lBasicTool_FhiclLite']
-if 'GEO2D_BASEDIR' in os.environ:
-    libs += commands.getoutput('geo2d-config --libs').split()
-if 'LARCV_ANN' and 'ANN_LIBDIR' in os.environ:
-    libs+= [" -lANN" ]
 if 'PYTHON_LIB' in os.environ:
     libs+= [" -L%s -lpython2.7"%(os.environ["PYTHON_LIB"].strip())]
 

@@ -18,25 +18,6 @@ ifeq ($(LARCV_OPENCV),1)
 endif
 
 APP_SUBDIRS := ImageAna ImageMod Filter Merger ThreadIO
-ifdef LARLITE_BASEDIR
-APP_SUBDIRS +=  VertexImg UBWireTool PMTWeights HiResDivider MeatSlicer
-  ifdef LAROPENCV_BASEDIR
-  APP_SUBDIRS += LArOpenCVHandle
-  endif
-endif
-ifeq ($(LARCV_ANN),1)
-APP_SUBDIRS += ANN dbscan
-ifeq ($(OSNAME),Linux)
-  ANN_OS=linux-g++
-endif
-ifeq ($(OSNAME),Darwin)
-  ANN_OS=macosx-g++
-endif
-endif
-
-#ifeq ($(LARCV_LLBANDLE),1)
-#  APP_SUBDIRS += LLBandle/LArCVFlashMatch
-#endif
 
 .phony: all clean
 

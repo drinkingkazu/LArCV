@@ -46,18 +46,6 @@ fi
 # Check Numpy
 export LARCV_NUMPY=`$LARCV_BASEDIR/bin/check_numpy`
 
-# Set ANN directories
-if [[ -z $LARCV_ANN ]]; then
-    export LARCV_ANN=1
-fi
-
-if [ $LARCV_ANN -eq 1 ]; then
-    export ANN_INCDIR=$LARCV_BASEDIR/app/ann_1.1.2/include
-    export ANN_LIBDIR=$LARCV_BASEDIR/app/ann_1.1.2/lib
-    printf "\033[93mANN: approximate nearest neighboor\033[00m\n"
-    echo "    Found ANN package"
-fi
-
 # warning for missing support
 missing=""
 if [ $LARCV_OPENCV -eq 0 ]; then
@@ -65,9 +53,6 @@ if [ $LARCV_OPENCV -eq 0 ]; then
 fi
 if [ $LARCV_NUMPY -eq 0 ]; then
     missing+=" Numpy"
-fi
-if [ $LARCV_ANN -eq 0 ]; then
-    missing+=" ANN"
 fi
 if [[ $missing ]]; then
     printf "\033[93mWarning\033[00m ... missing$missing support. Build without them.\n";
@@ -94,46 +79,6 @@ mkdir -p $LARCV_BINDIR;
 
 export LD_LIBRARY_PATH=$LARCV_LIBDIR:$LD_LIBRARY_PATH
 export PYTHONPATH=$LARCV_BASEDIR/python:$PYTHONPATH
-
-if [[ $LARLITE_BASEDIR ]]; then
-    printf "\033[93mLArLite\033[00m\n"
-    echo "    Found larlite set up @ \$LARLITE_BASEDIR=${LARLITE_BASEDIR}"
-    echo "    Preparing APILArLite package for build (making sym links)"
-    target=$LARCV_APPDIR/Supera/larfmwk_shared/*
-    for f in $target
-    do
-	ln -sf $f $LARCV_APPDIR/Supera/APILArLite/
-    done
-fi
-
-if [[ -d $MRB_TOP/srcs/uboonecode/uboone ]]; then
-    printf "\033[93mLArSoft\033[00m\n"
-    echo "    Found local larsoft @ \$MRB_TOP=${MRB_TOP}"
-    echo "    Preparing APILArSoft package for build (making sym links)"
-    target=$LARCV_APPDIR/Supera/larfmwk_shared/*
-    for f in $target
-    do
-	ln -sf $f $LARCV_APPDIR/Supera/APILArSoft/
-    done
-    if [ ! -d $MRB_TOP/srcs/uboonecode/uboone/Supera ]; then
-	ln -s $LARCV_APPDIR/Supera/APILArSoft $MRB_TOP/srcs/uboonecode/uboone/Supera
-    fi
-fi
-
-if [[ -d $MRB_TOP/srcs/argoneutcode/ ]]; then
-    printf "\033[93mLArSoft\033[00m\n"
-    echo "    Found local larsoft @ \$MRB_TOP=${MRB_TOP}"
-    echo "    Preparing APILArSoft package for build (making sym links)"
-    target=$LARCV_APPDIR/Supera/larfmwk_shared/*
-    for f in $target
-    do
-    ln -sf $f $LARCV_APPDIR/Supera/APILArSoft/
-    done
-    if [ ! -d $MRB_TOP/srcs/argoneutcode/Supera ]; then
-    ln -s $LARCV_APPDIR/Supera/APILArSoft $MRB_TOP/srcs/argoneutcode/Supera
-    fi
-fi
-
 
 export LARCV_CXX=clang++
 if [ -z `command -v $LARCV_CXX` ]; then
