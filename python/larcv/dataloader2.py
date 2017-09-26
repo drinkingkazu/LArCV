@@ -86,6 +86,8 @@ class larcv_threadio (object):
       self._cfg_file = None
       self._next_storage_id = 0
       self._storage = {}
+      self._tree_entries = None
+      self._event_ids = None
 
    def reset(self):
       if self._proc: self._proc.reset()
@@ -177,6 +179,9 @@ class larcv_threadio (object):
          batch_data = larcv.BatchDataStorageFactory(dtype).get().get_storage(name).get_batch(self._next_storage_id)
          storage.set_data(self._next_storage_id, batch_data)
 
+      self._tree_entries = self._proc.processed_entries(self._next_storage_id)
+      self._event_ids    = self._proc.processed_events(self._next_storage_id)
+
       self._proc.release_data(self._next_storage_id)
       self._next_storage_id += 1
       if self._next_storage_id == self._proc.num_batch_storage():
@@ -190,6 +195,12 @@ class larcv_threadio (object):
       except KeyError:
          sys.stderr.write('Cannot fetch data w/ key %s (unknown)\n' % key)
          return
+
+   def fetch_event_ids(self):
+      return self._event_ids
+
+   def fetch_entries(self):
+      return self._tree_entries
 
 def sig_kill(signal,frame):
    print '\033[95mSIGINT detected.\033[00m Finishing the program gracefully.'
