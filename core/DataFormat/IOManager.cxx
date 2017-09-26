@@ -226,7 +226,7 @@ namespace larcv {
       in_tree_ptr->SetBranchAddress(br_name.c_str(), &(_product_ptr_v[id]));
       _in_tree_v[id] = in_tree_ptr;
       _in_tree_index_v.push_back(kINVALID_SIZE);
-      _in_tree_entries_v[id] = in_tree_ptr->GetEntries();
+      _in_tree_entries_v.push_back(in_tree_ptr->GetEntries());
     }	
     
     if(_io_mode != kREAD) {
@@ -526,9 +526,9 @@ namespace larcv {
 
     if(id == kINVALID_SIZE) {
       id = register_producer(type,producer);
-      if(_io_mode == kREAD)
+      if(_io_mode == kREAD) {
 	LARCV_NORMAL() << ProductName(type) << " created w/ producer name " << producer << " but won't be stored in file (kREAD mode)" << std::endl;
-      else {
+      }else {
 	for(size_t i=0; i<_in_tree_index; ++i) _out_tree_v[id]->Fill();
 	LARCV_NORMAL() << "Created TTree " << _out_tree_v[id]->GetName() << " (id=" << id <<") w/ " << _in_tree_index << " entries..." << std::endl;
       }
@@ -666,6 +666,8 @@ namespace larcv {
     _set_event_id.clear();
     _in_tree_v.clear();
     _in_tree_v.resize(1000,nullptr);
+    _in_tree_entries_v.clear();
+    _in_tree_entries_v.resize(1000,0);
     _in_tree_index_v.clear();
     _out_tree_v.clear();
     _out_tree_v.resize(1000,nullptr);
