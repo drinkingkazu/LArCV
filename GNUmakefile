@@ -36,10 +36,6 @@ obj:
 	@echo
 	@for i in $(CORE_SUBDIRS); do ( echo "" && echo "Compiling $$i..." && cd $(LARCV_COREDIR)/$$i && $(MAKE) ) || exit $$?; done
 	@echo Building app...
-ifeq ($(LARCV_ANN),1)
-	echo "Compiling app/ann_1.1.2 os=$(ANN_OS)"
-	(cd $(LARCV_APPDIR)/ann_1.1.2 && $(MAKE) $(ANN_OS)) || exit $$?
-endif
 	@for i in $(APP_SUBDIRS); do ( echo "" && echo "Compiling $$i..." && cd $(LARCV_APPDIR)/$$i && $(MAKE) ) || exit $$?; done
 
 lib: obj
