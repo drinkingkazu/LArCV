@@ -226,6 +226,7 @@ namespace larcv {
       in_tree_ptr->SetBranchAddress(br_name.c_str(), &(_product_ptr_v[id]));
       _in_tree_v[id] = in_tree_ptr;
       _in_tree_index_v.push_back(kINVALID_SIZE);
+      _in_tree_entries_v[id] = in_tree_ptr->GetEntries();
     }	
     
     if(_io_mode != kREAD) {
@@ -524,13 +525,13 @@ namespace larcv {
     auto id = producer_id(type,producer);
 
     if(id == kINVALID_SIZE) {
-      if(_io_mode == kREAD) {
-	LARCV_ERROR() << "Invalid producer requested: " << producer << " for " << ProductName(type) << std::endl;
-	throw larbys();
-      }
       id = register_producer(type,producer);
-      for(size_t i=0; i<_in_tree_index; ++i) _out_tree_v[id]->Fill();
-      LARCV_NORMAL() << "Created TTree " << _out_tree_v[id]->GetName() << " (id=" << id <<") w/ " << _in_tree_index << " entries..." << std::endl;
+      if(_io_mode == kREAD)
+	LARCV_NORMAL() << ProductName(type) << " created w/ producer name " << producer << " but won't be stored in file (kREAD mode)" << std::endl;
+      else {
+	for(size_t i=0; i<_in_tree_index; ++i) _out_tree_v[id]->Fill();
+	LARCV_NORMAL() << "Created TTree " << _out_tree_v[id]->GetName() << " (id=" << id <<") w/ " << _in_tree_index << " entries..." << std::endl;
+      }
     }
     return get_data(id);
   }
@@ -548,10 +549,12 @@ namespace larcv {
     if(_io_mode != kWRITE && _in_tree_index != kINVALID_SIZE &&
        _in_tree_index_v[id] != _in_tree_index && _read_id_bool[id] ) {
 
-      LARCV_DEBUG() << "Reading in TTree " << _in_tree_v[id]->GetName() << " index " << _in_tree_index << std::endl;
-      _in_tree_v[id]->GetEntry(_in_tree_index);
-      _in_tree_index_v[id] =_in_tree_index;
-
+      if(_in_tree_entries_v[id]) {
+	LARCV_DEBUG() << "Reading in TTree " << _in_tree_v[id]->GetName() << " index " << _in_tree_index << std::endl;
+	_in_tree_v[id]->GetEntry(_in_tree_index);
+	_in_tree_index_v[id] =_in_tree_index;
+      }
+      
       auto& ptr = _product_ptr_v[id];
       // retrieve event_id if not yet done
       if(!_event_id.valid()) {

@@ -121,6 +121,7 @@ namespace larcv {
     std::vector<TTree*>          _out_tree_v;
     std::vector<TChain*>         _in_tree_v;
     std::vector<size_t>          _in_tree_index_v;
+    std::vector<size_t>          _in_tree_entries_v;
     size_t _product_ctr;
     std::vector<larcv::EventBase*>      _product_ptr_v;
     std::vector<larcv::ProductType_t>   _product_type_v;
