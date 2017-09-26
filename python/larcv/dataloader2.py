@@ -1,5 +1,6 @@
 #import ROOT,sys,time,os,signal
 from larcv import larcv
+import ROOT as rt
 import sys,time,os,signal
 import numpy as np
 
@@ -19,7 +20,7 @@ class batch_pydata(object):
       self._dim_data = None
       self._time_copy = None
       self._time_reshape = None
-
+      
    def batch_data_size(self):
       dsize=1
       for v in self._dim_data: dsize *= v
@@ -33,7 +34,6 @@ class batch_pydata(object):
 
    def set_data(self,storage_id,larcv_batchdata):
       self._storage_id = storage_id
-
       dim = larcv_batchdata.dim()
 
       # set dimension
@@ -48,7 +48,7 @@ class batch_pydata(object):
             if not self._dim_data[i] == dim[i]:
                sys.stderr.write('%d-th dimension changed (%d => %d)\n' % (i,self._dim_data[i],dim[i]))
                raise ValueError
-         
+
       # copy data into numpy array
       ctime = time.time()
       if self._npy_data is None:
@@ -60,7 +60,7 @@ class batch_pydata(object):
 
       ctime = time.time()
       self._npy_data = self._npy_data.reshape(self._dim_data[0], self.batch_data_size()/self._dim_data[0]).astype(np.float32)
-      self.time_data_conv = time.time() - ctime         
+      self.time_data_conv = time.time() - ctime
 
       return
 
@@ -159,7 +159,7 @@ class larcv_threadio (object):
    def is_reading(self):
       return (not self._proc.storage_status_array()[self._next_storage_id] == 3)
 
-   def next(self):
+   def next(self,store_entries=False,store_event_ids=False):
       if not self._proc or not self._proc.manager_started():
          sys.stderr.write('must call start_manager(batch_size) before next()!\n')
          return
@@ -179,8 +179,11 @@ class larcv_threadio (object):
          batch_data = larcv.BatchDataStorageFactory(dtype).get().get_storage(name).get_batch(self._next_storage_id)
          storage.set_data(self._next_storage_id, batch_data)
 
-      self._tree_entries = self._proc.processed_entries(self._next_storage_id)
-      self._event_ids    = self._proc.processed_events(self._next_storage_id)
+      if not store_entries: self._tree_entries = None
+      else: self._tree_entries = rt.std.vector('size_t')(self._proc.processed_entries(self._next_storage_id))
+
+      if not store_event_ids: self._event_ids = None
+      else: self._event_ids = rt.std.vector('larcv::EventBase')(self._proc.processed_events(self._next_storage_id))
 
       self._proc.release_data(self._next_storage_id)
       self._next_storage_id += 1

@@ -159,8 +159,12 @@ namespace larcv {
   {
     LARCV_DEBUG() <<"start"<<std::endl;
     auto image_data = (EventImage2D*)(mgr.get_data(kProductImage2D,_image_producer));
-    if(!image_data || image_data->Image2DArray().empty()) {
+    if(!image_data) {
       LARCV_CRITICAL() << "Could not locate image data w/ producer name " << _image_producer << std::endl;
+      throw larbys();
+    }
+    if(image_data->Image2DArray().empty()) {
+      LARCV_CRITICAL() << "Image data w/ producer name " << _image_producer << " is empty!" << std::endl;
       throw larbys();
     }
     // one time operation: get image dimension

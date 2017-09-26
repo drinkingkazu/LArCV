@@ -226,7 +226,7 @@ namespace larcv {
       in_tree_ptr->SetBranchAddress(br_name.c_str(), &(_product_ptr_v[id]));
       _in_tree_v[id] = in_tree_ptr;
       _in_tree_index_v.push_back(kINVALID_SIZE);
-      _in_tree_entries_v.push_back(in_tree_ptr->GetEntries());
+      _in_tree_entries_v.push_back(0);
     }	
     
     if(_io_mode != kREAD) {
@@ -354,12 +354,14 @@ namespace larcv {
 
     // Get tree entries
     _in_tree_entries = kINVALID_SIZE;
-    for(auto const& t : _in_tree_v) {
+    for(size_t id=0; id<_in_tree_v.size(); ++id) {
+      auto& t = _in_tree_v[id];
       if(!t) break;
       size_t tmp_entries = t->GetEntries();
       LARCV_INFO() << "TTree " << t->GetName() << " has " << tmp_entries << " entries" << std::endl;
       if(_in_tree_entries == kINVALID_SIZE) _in_tree_entries = tmp_entries;
       else _in_tree_entries = (_in_tree_entries < tmp_entries ? _in_tree_entries : tmp_entries);
+      _in_tree_entries_v[id] = tmp_entries;
     }
     
   }
