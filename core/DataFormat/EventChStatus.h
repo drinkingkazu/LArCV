@@ -1,14 +1,14 @@
 /**
  * \file EventChStatus.h
  *
- * \ingroup DataFormat
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class EventChStatus
-1;2c *
+ * \brief Class def header for a class larcv::EventChStatus
+ *
  * @author kazuhiro
  */
 
-/** \addtogroup DataFormat
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef __LARCV_EVENTCHSTATUS_H__
@@ -23,7 +23,7 @@ namespace larcv {
   
   /**
     \class EventChStatus
-    Event-wise class to store a collection of larcv::ChStatus (one per plane)
+    \brief Event-wise class to store a collection of larcv::ChStatus (one per plane)
   */
   class EventChStatus : public EventBase {
     

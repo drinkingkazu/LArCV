@@ -1,14 +1,14 @@
 /**
  * \file Pixel2DCluster.h
  *
- * \ingroup DataFormat
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class Pixel2DCluster
+ * \brief Class def header for a class larcv::Pixel2DCluster
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DataFormat
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef PIXEL2DCLUSTER_H

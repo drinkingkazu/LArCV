@@ -1,14 +1,14 @@
 /**
  * \file DataProductFactory.h
  *
- * \ingroup DataFormat
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class DataProductFactory
+ * \brief Class def header for a class larcv::DataProductFactory
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DataFormat
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef __DATAPRODUCTFACTORY_H__

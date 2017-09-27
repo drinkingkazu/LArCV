@@ -1,14 +1,14 @@
 /**
  * \file PGraph.h
  *
- * \ingroup DataFormat
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class PGraph
+ * \brief Class def header for a class larcv::PGraph
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DataFormat
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef __PGRAPH_H__

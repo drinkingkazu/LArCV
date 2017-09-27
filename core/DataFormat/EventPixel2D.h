@@ -1,14 +1,14 @@
 /**
  * \file EventPixel2D.h
  *
- * \ingroup DataFormat
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class EventPixel2D
+ * \brief Class def header for a class larcv::EventPixel2D
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DataFormat
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef EVENTPIXEL2D_H
@@ -25,7 +25,7 @@ namespace larcv {
   
   /**
     \class EventPixel2D
-    Event-wise class to store a collection of larcv::Pixel2D and larcv::Pixel2DCluster
+    \brief Event-wise class to store a collection of larcv::Pixel2D and larcv::Pixel2DCluster
   */
   class EventPixel2D : public EventBase {
     

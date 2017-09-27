@@ -1,14 +1,14 @@
 /**
  * \file PSet.h
  *
- * \ingroup CVFhicl
+ * \ingroup core_Base
  * 
- * \brief Class def header for a class PSet
+ * \brief Class def header for a class larcv::PSet
  *
  * @author kazuhiro
  */
 
-/** \addtogroup CVFhicl
+/** \addtogroup core_Base
 
     @{*/
 #ifndef __CVFHICL_PSET_H__
@@ -22,8 +22,7 @@
 namespace larcv {
   /**
      \class PSet
-     User defined class PSet ... these comments are used to generate
-     doxygen documentation!
+     \brief A nested configuration parameter set holder for larcv framework.
   */
   class PSet {
     

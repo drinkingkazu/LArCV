@@ -1,14 +1,14 @@
 /**
  * \file larcv_base.h
  *
- * \ingroup LArCV
+ * \ingroup core_Base
  * 
- * \brief Class definition file of larcv_base
+ * \brief Class definition file of larcv::larcv_base
  *
  * @author Kazu - Nevis 2015
  */
 
-/** \addtogroup LArCV
+/** \addtogroup core_Base
 
     @{*/
 

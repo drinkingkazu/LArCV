@@ -1,14 +1,14 @@
 /**
  * \file ProcessFactory.h
  *
- * \ingroup Processor
+ * \ingroup core_Processor
  * 
- * \brief Class def header for a class ProcessFactory
+ * \brief Class def header for a class larcv::ProcessFactory
  *
  * @author kazuhiro
  */
 
-/** \addtogroup Processor
+/** \addtogroup core_Processor
 
     @{*/
 #ifndef PROCESSFACTORY_H

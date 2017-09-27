@@ -1,14 +1,14 @@
 /**
  * \file IOManager.h
  *
- * \ingroup LArCV
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class IOManager
+ * \brief Class def header for a class larcv::IOManager
  *
  * @author drinkingkazu
  */
 
-/** \addtogroup LArCV
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef IOMANAGER_H
@@ -28,7 +28,7 @@
 namespace larcv {
   /**
     \class IOManager
-    LArCV file IO hanlder class: it can read/write LArCV file.
+    \brief LArCV file IO hanlder class: it can read/write LArCV file.
   */
   class IOManager : public larcv::larcv_base {
     
@@ -136,4 +136,4 @@ namespace larcv {
 }
 
 #endif
-
+/** @} */ // end of doxygen group 

@@ -1,14 +1,14 @@
 /**
  * \file ImageMeta.h
  *
- * \ingroup LArCV
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class ImageMeta
+ * \brief Class def header for a class larcv::ImageMeta
  *
  * @author kazuhiro
  */
 
-/** \addtogroup LArCV
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef __LARCV_IMAGEMETA_H__

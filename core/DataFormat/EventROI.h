@@ -1,14 +1,14 @@
 /**
  * \file EventROI.h
  *
- * \ingroup DataFormat
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class EventROI
+ * \brief Class def header for a class larcv::EventROI
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DataFormat
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef EVENTROI_H

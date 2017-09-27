@@ -1,3 +1,17 @@
+/**
+ * \file LArCVTypes.h
+ *
+ * \ingroup core_Base
+ * 
+ * \brief basic typedefs and enums (larcv::Point2D, larcv::msg, etc.)
+ *
+ * @author Kazu - Nevis 2015
+ */
+
+/** \addtogroup core_Base
+
+    @{*/
+
 #ifndef __LARCVTYPES_H__
 #define __LARCVTYPES_H__
 
@@ -67,3 +81,4 @@ namespace larcv {
 
 }
 #endif
+/** @} */ // end of doxygen group

@@ -1,14 +1,14 @@
 /**
  * \file EventVoxel3D.h
  *
- * \ingroup DataFormat
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class EventVoxel3D
+ * \brief Class def header for a class larcv::EventVoxel3D
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DataFormat
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef EVENTVOXEL3D_H

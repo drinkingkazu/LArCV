@@ -1,14 +1,14 @@
 /**
  * \file ROI.h
  *
- * \ingroup DataFormat
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class ROI
+ * \brief Class def header for a class larcv::ROI
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DataFormat
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef __ROI_H__
@@ -22,8 +22,7 @@ namespace larcv {
 
   /**
      \class ROI
-     User defined class ROI ... these comments are used to generate
-     doxygen documentation!
+     \brief Particle/Interaction-wise truth information data
   */
   class ROI{
     

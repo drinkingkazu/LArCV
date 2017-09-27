@@ -1,3 +1,16 @@
+/**
+ * \file Parser.h
+ *
+ * \ingroup core_Base
+ * 
+ * \brief List of functions to type-cast std::string to an appropriate value type
+ *
+ * @author Kazu - Nevis 2015
+ */
+
+/** \addtogroup core_Base
+
+    @{*/
 #ifndef __LARCVBASE_PARSER_H__
 #define __LARCVBASE_PARSER_H__
 
@@ -68,3 +81,4 @@ namespace larcv {
 }
 
 #endif
+/** @} */ // end of doxygen group

@@ -1,18 +1,18 @@
 /**
  * \file EventBase.h
  *
- * \ingroup DataFormat
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class EventBase
+ * \brief Class def header for a class larcv::EventBase
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DataFormat
+/** \addtogroup core_DataFormat
 
     @{*/
-#ifndef EVENTBASE_H
-#define EVENTBASE_H
+#ifndef LARCV_EVENTBASE_H
+#define LARCV_EVENTBASE_H
 
 #include <iostream>
 #include "DataFormatTypes.h"
@@ -22,7 +22,7 @@ namespace larcv {
   class DataProductFactory;
   /**
     \class EventBase
-    Base class for an event data product (what is stored in output file), holding run/subrun/event ID + producer name.
+    \brief Base class for an event data product (what is stored in output file), holding run/subrun/event ID + producer name.
   */
   class EventBase{
     friend class IOManager;

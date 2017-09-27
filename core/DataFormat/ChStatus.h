@@ -1,14 +1,14 @@
 /**
  * \file ChStatus.h
  *
- * \ingroup DataFormat
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class ChStatus
+ * \brief Class def header for a class larcv::ChStatus
  *
  * @author kazuhiro
  */
 
-/** \addtogroup DataFormat
+/** \addtogroup core_DataFormat
 
     @{*/
 #ifndef __LARCV_CHSTATUS_H__
@@ -19,8 +19,7 @@
 namespace larcv {
   /**
      \class ChStatus
-     User defined class ChStatus ... these comments are used to generate
-     doxygen documentation!
+     \brief Data rep. to hold channel-wise "status" (such as dead wire, etc.).
   */
   class ChStatus {
     

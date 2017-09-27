@@ -1,14 +1,14 @@
 /**
  * \file Image2D.h
  *
- * \ingroup LArCV
+ * \ingroup core_DataFormat
  * 
- * \brief Class def header for an image data holder
+ * \brief Class def header for an image data holder larcv::Image2D
  *
  * @author tmw, kazu
  */
 
-/** \addtogroup LArCV
+/** \addtogroup core_DataFormat
 
     @{*/
 

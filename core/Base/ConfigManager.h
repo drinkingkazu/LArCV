@@ -1,14 +1,14 @@
 /**
  * \file ConfigManager.h
  *
- * \ingroup Base
+ * \ingroup core_Base
  * 
- * \brief Class def header for a class ConfigManager
+ * \brief Class def header for a class larcv::ConfigManager
  *
  * @author drinkingkazu
  */
 
-/** \addtogroup Base
+/** \addtogroup core_Base
 
     @{*/
 #ifndef __LARCVBASE_CONFIGMANAGER_H__
@@ -23,8 +23,9 @@
 namespace larcv {
   /**
      \class ConfigManager
-     User defined class ConfigManager ... these comments are used to generate
-     doxygen documentation!
+     \brief Utility class to register a set of configurations
+     Provides also a shared instance through which registered configurations can be shared beyond a single owner.\n
+     Using larcv::PSet, the uniqueness of configuration parameters is guaranteed (no worry to "overwrite")\n
   */
   class ConfigManager : public larcv_base {
     

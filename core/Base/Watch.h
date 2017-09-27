@@ -4,14 +4,14 @@
 /**
  * \file Watch.h
  *
- * \ingroup Base
+ * \ingroup core_Base
  * 
- * \brief Class def header for a class Watch
+ * \brief Class def header for a class larcv::Watch
  *
  * @author kazuhiro
  */
 
-/** \addtogroup Base
+/** \addtogroup core_Base
 
     @{*/
 

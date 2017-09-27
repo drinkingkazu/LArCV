@@ -1,14 +1,14 @@
 /**
  * \file larbys.h
  *
- * \ingroup LArCV
+ * \ingroup core_Base
  * 
- * \brief Class def header for exception classes in LArUtil package
+ * \brief Class def header for exception classes for larcv framework
  *
  * @author kazuhiro tmw
  */
 
-/** \addtogroup LArCV
+/** \addtogroup core_Base
 
     @{*/
 #ifndef __LARCV_LARBYS_H__

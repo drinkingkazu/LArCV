@@ -1,14 +1,14 @@
 /**
  * \file larcv_logger.h
  *
- * \ingroup LArCV
+ * \ingroup core_Base
  * 
- * \brief logger utility class definition header file.
+ * \brief larcv::logger utility class definition header file.
  *
  * @author Kazu - Nevis 2015
  */
 
-/** \addtogroup LArCV
+/** \addtogroup core_Base
 
     @{*/
 #ifndef __LARCVLOGGER_H__

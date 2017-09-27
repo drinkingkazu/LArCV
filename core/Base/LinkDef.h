@@ -12,12 +12,12 @@
 // Classes
 #pragma link C++ namespace larcv+;
 //#pragma link C++ class larcv::Watch+;
-#pragma link C++ class larcv::Range<int>+;
-#pragma link C++ class larcv::Range<size_t>+;
-#pragma link C++ class larcv::Range<double>+;
-#pragma link C++ class larcv::UniqueRangeSet<int>+;
-#pragma link C++ class larcv::UniqueRangeSet<size_t>+;
-#pragma link C++ class larcv::UniqueRangeSet<double>+;
+//#pragma link C++ class larcv::Range<int>+;
+//#pragma link C++ class larcv::Range<size_t>+;
+//#pragma link C++ class larcv::Range<double>+;
+//#pragma link C++ class larcv::UniqueRangeSet<int>+;
+//#pragma link C++ class larcv::UniqueRangeSet<size_t>+;
+//#pragma link C++ class larcv::UniqueRangeSet<double>+;
 
 #pragma link C++ class larcv::Point2D+;
 #pragma link C++ namespace larcv::msg+;
