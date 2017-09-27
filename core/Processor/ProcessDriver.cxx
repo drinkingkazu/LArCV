@@ -265,7 +265,7 @@ namespace larcv {
 
     // Execute
     bool good_status=true;
-    bool cleared=false;
+    //bool cleared=false;
     for(auto& p : _proc_v) {
       good_status = good_status && p->_process_(_io);
       if(!good_status && _enable_filter) break;
@@ -274,16 +274,19 @@ namespace larcv {
     if(!_has_event_creator) {
       // If not read mode save entry
       if(_io.io_mode() != IOManager::kREAD && (!_enable_filter || good_status)) {
-	cleared = true;
+	//cleared = true;
 	_io.save_entry();    
       }
+      /*
       if(!cleared)
 	_io.clear_entry();
       cleared=true;
+      */
     }
+    /*
     if(!cleared && _io.io_mode() == IOManager::kREAD) 
       _io.clear_entry();
-
+    */
     // Bump up entry record
     ++_current_entry;
 
@@ -309,6 +312,7 @@ namespace larcv {
 	return false;
       }
       // if exist then move read pointer
+      //_io.clear_entry();
       _io.read_entry(_access_entry_v[_current_entry]);
     }
     // Execute processes
@@ -333,7 +337,8 @@ namespace larcv {
 	LARCV_ERROR() << "Entry " << entry << " exceeds available events in a file!" << std::endl;
 	return false;
       }
-      // if exist then move read pointer      
+      // if exist then move read pointer
+      //_io.clear_entry();
       _io.read_entry(_access_entry_v[entry],force_reload);
       _current_entry = entry;
     }
@@ -382,10 +387,10 @@ namespace larcv {
     size_t num_fraction=(max_entry - _current_entry)/10;
     while(_current_entry < max_entry) {
       
-      if(_io.io_mode() != IOManager::kWRITE) 
-	
+      if(_io.io_mode() != IOManager::kWRITE) {
+	//_io.clear_entry();
 	_io.read_entry(_access_entry_v[_current_entry]);
-
+      }
       _process_entry_();
 
       ++num_processed;
