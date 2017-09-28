@@ -18,6 +18,7 @@ namespace larcv {
     _output_producer = cfg.get<std::string>("OutputProducer");
     _comp_factor     = cfg.get<size_t>("CompressionFactor");
     _scale_factor    = cfg.get<float>("ScaleFactor",1.);
+    _pre_threshold   = cfg.get<float>("PreThreshold",0.0);
   }
 
   void VoxelCompressor::initialize()
@@ -43,6 +44,8 @@ namespace larcv {
     vox_set.Reset(meta);
 
     for(auto const& vox : event_voxel->GetVoxelSet()) {
+      if (vox.Value() < _pre_threshold)
+        continue;
       Voxel3D avox (meta.ID(orig_meta.X(vox.ID()),
 			    orig_meta.Y(vox.ID()),
 			    orig_meta.Z(vox.ID())), vox.Value() * _scale_factor);

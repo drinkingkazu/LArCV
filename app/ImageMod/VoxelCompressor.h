@@ -46,6 +46,7 @@ namespace larcv {
     std::string _output_producer;
     size_t _comp_factor;
     float  _scale_factor;
+    float  _pre_threshold;
   };
 
   /**
