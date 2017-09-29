@@ -1,14 +1,14 @@
 /**
  * \file Empty_Class_Name.h
  *
- * \ingroup Package_Name
+ * \ingroup Working_Package
  * 
  * \brief Class def header for a class Empty_Class_Name
  *
  * @author Shell_User_Name
  */
 
-/** \addtogroup Package_Name
+/** \addtogroup Working_Package
 
     @{*/
 #ifndef __EMPTY_CLASS_NAME_H__

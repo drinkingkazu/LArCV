@@ -24,7 +24,7 @@ namespace larcv {
     Event-wise class to store a collection of larcv::Voxel3D
   */
   class EventVoxel3D : public EventBase,
-		       public Voxel3DSet {
+		       public VoxelSet {
     
   public:
     
@@ -34,10 +34,31 @@ namespace larcv {
     /// Default destructor
     ~EventVoxel3D(){}
 
-    /// larcv::Voxel3D array clearer
-    void clear();
+    /// EventBase::clear() override
+    inline void clear()
+    { VoxelSet::Clear(); _meta.Clear(); }
+
+    /// Meta getter
+    inline const Voxel3DMeta& Meta() const
+    { return _meta; }
+    
+    /// Meta setter
+    inline void Meta(const Voxel3DMeta& meta) const
+    { VoxelSet::Clear(); _meta = meta; }
+
+  private:
+    Voxel3DMeta _meta;
 
   };
+}
+
+#include "IOManager.h"
+namespace larcv {
+
+  // Template instantiation for IO
+  template<> inline std::string product_unique_name<larcv::EventVoxel3D>() { return "voxel3d"; }
+  template EventVoxel3D& IOManager::get_data<larcv::EventVoxel3D>(const std::string&);
+  template EventVoxel3D& IOManager::get_data<larcv::EventVoxel3D>(const ProducerID_t);
 
   /**
      \class larcv::EventVoxel3D
@@ -46,7 +67,8 @@ namespace larcv {
   class EventVoxel3DFactory : public DataProductFactoryBase {
   public:
     /// ctor
-    EventVoxel3DFactory() { DataProductFactory::get().add_factory(kProductVoxel3D,this); }
+    EventVoxel3DFactory()
+    { DataProductFactory::get().add_factory(product_unique_name<larcv::EventVoxel3D>(),this); }
     /// dtor
     ~EventVoxel3DFactory() {}
     /// create method

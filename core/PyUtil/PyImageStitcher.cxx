@@ -37,7 +37,7 @@ namespace larcv {
 
   bool PyImageStitcher::process(IOManager& mgr)
   {
-    auto image_v = (EventImage2D*)(mgr.get_data(kProductImage2D,_producer_name));
+    auto image_v = (EventImage2D*)(mgr.get_data("image2d",_producer_name));
 
     if(!image_v) {
       LARCV_CRITICAL() << "Could not create Image2D with name " << _producer_name << std::endl;

@@ -2,7 +2,7 @@
 #define __ROI_CXX__
 
 #include "ROI.h"
-#include "UtilFunc.h"
+#include "DataFormatUtil.h"
 #include <set>
 #include <sstream>
 namespace larcv {

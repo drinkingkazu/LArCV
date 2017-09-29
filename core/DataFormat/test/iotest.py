@@ -34,11 +34,13 @@ o.set_out_file(OUT_FNAME)
 if not o.initialize():
     sys.exit(ERROR_WRITE_INIT)
 
+product_names = larcv.DataProductFactory.get().product_names()
+    
 for idx in xrange(NUM_EVENT):
 
-    for product_type in xrange(larcv.kProductUnknown):
+    for name_idx in xrange(product_names.size()):
 
-        o.get_data(product_type,"product_type%02d" % product_type)
+        o.get_data(product_names[name_idx],"product_type%02d" % name_idx)
 
     o.set_id(0,0,idx)
     o.save_entry()
@@ -65,13 +67,15 @@ for idx in xrange(NUM_EVENT):
     
     entry_ctr += 1
 
-    for product_type in xrange(larcv.kProductUnknown):
+    for name_idx in xrange(product_names.size()):
 
-        if product_type not in product_ctr:
-            product_ctr[product_type] = 0
+        name = product_names[name_idx]
+        
+        if name not in product_ctr:
+            product_ctr[name] = 0
 
-        if i.get_data(product_type,"product_type%02d" % product_type):
-            product_ctr[product_type] += 1
+        if i.get_data(name,"product_type%02d" % name_idx):
+            product_ctr[name] += 1
 
 i.finalize()
 
@@ -84,7 +88,7 @@ for t,ctr in product_ctr.iteritems():
         cmsg.error("Product type %d (name %s) only has %d/%d count!" % (t,larcv.ProductName(t),ctr,NUM_EVENT))
         sys.exit(ERROR_PRODUCT_MISSING)
         break
-
+print product_ctr
 if os.path.isfile(OUT_FNAME):
     os.remove(OUT_FNAME)
 

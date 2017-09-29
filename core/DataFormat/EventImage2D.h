@@ -1,14 +1,14 @@
 /**
  * \file EventImage2D.h
  *
- * \ingroup core_DataFormat
+ * \ingroup DataFormat
  * 
- * \brief Class def header for a class larcv::EventImage2D
+ * \brief Class def header for a class EventImage2D
  *
  * @author kazuhiro
  */
 
-/** \addtogroup core_DataFormat
+/** \addtogroup DataFormat
 
     @{*/
 #ifndef EVENTIMAGE2D_H
@@ -61,6 +61,15 @@ namespace larcv {
 
   };
 
+}
+
+#include "IOManager.h"
+namespace larcv {
+
+  // Template instantiation for IO
+  template<> inline std::string product_unique_name<larcv::EventImage2D>() { return "image2d"; }
+  template EventImage2D& IOManager::get_data<larcv::EventImage2D>(const std::string&);
+  template EventImage2D& IOManager::get_data<larcv::EventImage2D>(const ProducerID_t);
   /**
      \class larcv::EventImage2D
      \brief A concrete factory class for larcv::EventImage2D
@@ -68,9 +77,8 @@ namespace larcv {
   class EventImage2DFactory : public DataProductFactoryBase {
   public:
     /// ctor
-    EventImage2DFactory() { DataProductFactory::get().add_factory(kProductImage2D,this); }
-    /// dtor
-    ~EventImage2DFactory() {}
+    EventImage2DFactory()
+    { DataProductFactory::get().add_factory(product_unique_name<larcv::EventImage2D>(),this); }
     /// create method
     EventBase* create() { return new EventImage2D; }
   };

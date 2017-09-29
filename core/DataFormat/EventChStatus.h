@@ -19,6 +19,7 @@
 #include "EventBase.h"
 #include "ChStatus.h"
 #include "DataProductFactory.h"
+
 namespace larcv {
   
   /**
@@ -60,6 +61,15 @@ namespace larcv {
     std::map< ::larcv::PlaneID_t, ::larcv::ChStatus > _status_m;
 
   };
+}
+
+#include "IOManager.h"
+namespace larcv {
+
+  // Template instantiation for IO
+  template<> inline std::string product_unique_name<larcv::EventChStatus>() { return "chstatus"; }
+  template EventChStatus& IOManager::get_data<larcv::EventChStatus>(const std::string&);
+  template EventChStatus& IOManager::get_data<larcv::EventChStatus>(const ProducerID_t);
 
   /**
      \class larcv::EventChStatus
@@ -68,7 +78,8 @@ namespace larcv {
   class EventChStatusFactory : public DataProductFactoryBase {
   public:
     /// ctor
-    EventChStatusFactory() { DataProductFactory::get().add_factory(kProductChStatus,this); }
+    EventChStatusFactory()
+    { DataProductFactory::get().add_factory(product_unique_name<larcv::EventChStatus>(),this); }
     /// dtor
     ~EventChStatusFactory() {}
     /// create method

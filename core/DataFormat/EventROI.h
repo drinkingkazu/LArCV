@@ -18,6 +18,7 @@
 #include "EventBase.h"
 #include "ROI.h"
 #include "DataProductFactory.h"
+
 namespace larcv {
   /**
     \class EventROI
@@ -59,6 +60,15 @@ namespace larcv {
     std::vector<larcv::ROI> _part_v;
 
   };
+}
+
+#include "IOManager.h"
+namespace larcv {
+
+  // Template instantiation for IO
+  template<> inline std::string product_unique_name<larcv::EventROI>() { return "roi"; }
+  template EventROI& IOManager::get_data<larcv::EventROI>(const std::string&);
+  template EventROI& IOManager::get_data<larcv::EventROI>(const ProducerID_t);
 
   /**
      \class larcv::EventROI
@@ -67,7 +77,8 @@ namespace larcv {
   class EventROIFactory : public DataProductFactoryBase {
   public:
     /// ctor
-    EventROIFactory() { DataProductFactory::get().add_factory(kProductROI,this); }
+    EventROIFactory()
+    { DataProductFactory::get().add_factory(product_unique_name<larcv::EventROI>(),this); }
     /// dtor
     ~EventROIFactory() {}
     /// create method

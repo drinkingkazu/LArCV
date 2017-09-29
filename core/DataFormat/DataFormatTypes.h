@@ -78,20 +78,13 @@ namespace larcv {
 
   /// ProducerID_t to identify a unique data product within a process (for larcv::IOManager)
   typedef size_t ProducerID_t;
+  /// ProductName_t to identify a unique data product within a process (for larcv::IOManager)
+  typedef std::pair<std::string,std::string> ProducerName_t;
   /// Invalid ProducerID_t
   static const ProducerID_t kINVALID_PRODUCER=kINVALID_SIZE;
 
-  /// Type of data product  
-  enum ProductType_t {
-    kProductImage2D,  ///< Image2D, EventImage2D
-    kProductROI,      ///< ROI, EventROI
-    kProductChStatus, ///< ChStatus, EventChStatus
-    kProductPixel2D,  ///< Pixel2D, Pixel2DCluster
-    //kProductGeo2D,    ///< Vector2D, LineSegment2D
-    kProductPGraph,   ///< PGraph, EventPGraph
-    kProductVoxel3D,  ///< Voxel3D, EventVoxel3D
-    kProductUnknown   ///< LArbys
-  };
+  template <class T>
+  std::string product_unique_name();
 
 }
 #endif

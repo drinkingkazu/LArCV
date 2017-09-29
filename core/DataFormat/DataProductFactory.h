@@ -1,14 +1,14 @@
 /**
  * \file DataProductFactory.h
  *
- * \ingroup core_DataFormat
+ * \ingroup DataFormat
  * 
- * \brief Class def header for a class larcv::DataProductFactory
+ * \brief Class def header for a class DataProductFactory
  *
  * @author kazuhiro
  */
 
-/** \addtogroup core_DataFormat
+/** \addtogroup DataFormat
 
     @{*/
 #ifndef __DATAPRODUCTFACTORY_H__
@@ -18,10 +18,8 @@
 #include <map>
 #include "Base/larcv_base.h"
 #include "Base/larbys.h"
-#include "ProductMap.h"
 #include "EventBase.h"
 #include "DataFormatTypes.h"
-#include "UtilFunc.h"
 #include <sstream>
 namespace larcv {
 
@@ -57,58 +55,34 @@ namespace larcv {
     /// Default dtor
     ~DataProductFactory() {_factory_map.clear();}
     /// Static sharable instance getter
-    static DataProductFactory& get()
+    static inline DataProductFactory& get()
     { if(!_me) _me = new DataProductFactory; return *_me; }
+    
     /// Factory registration method (should be called by global factory instance in algorithm header)
-    void add_factory(const ProductType_t type, larcv::DataProductFactoryBase* factory)
-    {
-      LARCV_INFO() << "Registering a factory " << factory << " of type " << ProductName(type) << std::endl;
-      
-      auto iter = _factory_map.find(type);
+    void add_factory(std::string type, larcv::DataProductFactoryBase* factory);
 
-      if(iter != _factory_map.end()) {
-	LARCV_CRITICAL() << "Attempted a duplicate registration of Data product "
-			 << ProductName(type) << " to a factory!" << std::endl;
-	throw larbys();
-      }
-
-      _factory_map[type] = factory;
-    }
     /// Factory creation method (should be called by clients, possibly you!)
-    EventBase* create(const ProductType_t type, const std::string producer) {
-      auto iter = _factory_map.find(type);
-      if(iter == _factory_map.end() || !((*iter).second)) {
-	LARCV_ERROR() << "Found no registered class " << ProductName(type) << std::endl;
-	return nullptr;
-      }
-      auto ptr = (*iter).second->create();
-      ptr->_producer = producer;
-      return ptr;
+    inline EventBase* create(const std::string& type, const std::string& producer) {
+      return create(ProducerName_t(type,producer));
     }
+    
+    /// Factory creation method (should be called by clients, possibly you!)
+    EventBase* create(const ProducerName_t& id);
 
     /// List registered products
-    void list() const {
-      std::stringstream ss;
-      ss << "    Listing registered products:" << std::endl;
-      for(auto const& type_factory : _factory_map) {
-	ss << "    Type: " << type_factory.first
-	   << " ... Name: " << ProductName(type_factory.first)
-	   << " ... Factory @ " << type_factory.second
-	   << std::endl;
-      }
-      ss << std::endl;
-      LARCV_NORMAL() << ss.str() << std::endl;
-    }
+    void list() const;
 
-    std::string ROIType2String(const ROIType_t type) 
-    { return ::larcv::ROIType2String(type); }
-    
-    ROIType_t String2ROIType(const std::string& name)
-    { return ::larcv::String2ROIType(name); }
+    inline size_t unique_product_count() const
+    { return _id_to_type.size(); }
+
+    inline const std::vector<std::string>& product_names() const
+    { return _id_to_type; }
 
   private:
-    /// Static factory container
-    std::map<larcv::ProductType_t,larcv::DataProductFactoryBase*> _factory_map;
+    /// Factory container
+    std::map<std::string,larcv::DataProductFactoryBase*> _factory_map;
+    /// Unique product type ID
+    std::vector<std::string> _id_to_type;
     /// Static self
     static DataProductFactory* _me;
   };

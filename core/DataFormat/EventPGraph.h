@@ -59,6 +59,15 @@ namespace larcv {
     std::vector<larcv::PGraph> _int_v;
 
   };
+}
+
+#include "IOManager.h"
+namespace larcv{
+
+  // Template instantiation for IO
+  template<> inline std::string product_unique_name<larcv::EventPGraph>() { return "pgraph"; }
+  template EventPGraph& IOManager::get_data<larcv::EventPGraph>(const std::string&);
+  template EventPGraph& IOManager::get_data<larcv::EventPGraph>(const ProducerID_t);
 
   /**
      \class larcv::EventPGraph
@@ -67,7 +76,8 @@ namespace larcv {
   class EventPGraphFactory : public DataProductFactoryBase {
   public:
     /// ctor
-    EventPGraphFactory() { DataProductFactory::get().add_factory(kProductPGraph,this); }
+    EventPGraphFactory()
+    { DataProductFactory::get().add_factory(product_unique_name<larcv::EventPGraph>(),this); }
     /// dtor
     ~EventPGraphFactory() {}
     /// create method

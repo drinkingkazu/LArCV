@@ -15,19 +15,18 @@
 #define EVENTPIXEL2D_H
 
 #include <iostream>
-#include <map>
 #include "EventBase.h"
-#include "Pixel2D.h"
-#include "Pixel2DCluster.h"
-#include "ImageMeta.h"
 #include "DataProductFactory.h"
+#include "Voxel.h"
+#include "ImageMeta.h"
 namespace larcv {
   
   /**
     \class EventPixel2D
     \brief Event-wise class to store a collection of larcv::Pixel2D and larcv::Pixel2DCluster
   */
-  class EventPixel2D : public EventBase {
+  class EventPixel2D : public EventBase,
+		       public VoxelSet {
     
   public:
     
@@ -36,58 +35,31 @@ namespace larcv {
     
     /// Default destructor
     virtual ~EventPixel2D(){}
-
-    /// Clears an array of larcv::Pixel2D
-    void clear();
-
-    /// Retrieve Pixel2D for a plane
-    const std::vector<larcv::Pixel2D>& Pixel2DArray(const ::larcv::PlaneID_t plane);
-    /// Retrieve Pixel2DCluster for a plane
-    const std::vector<larcv::Pixel2DCluster>& Pixel2DClusterArray(const ::larcv::PlaneID_t plane);
-    /// Retrieve ImageMeta for a plane (for simple Pixel2D collection)
-    const ImageMeta& Meta(const ::larcv::PlaneID_t plane) const;
-    /// Retrieve ImageMeta for a plane (for Pixel2DCluster)
-    const std::vector<larcv::ImageMeta>& ClusterMetaArray(const ::larcv::PlaneID_t plane) const;
-    /// Retrieve ImageMeta for a plane (for Pixel2DCluster)
-    const ImageMeta& ClusterMeta(const ::larcv::PlaneID_t plane, const size_t) const;
-
-    const std::map< ::larcv::PlaneID_t, std::vector<larcv::Pixel2D> >& Pixel2DArray() const
-    { return _pixel_m; }
     
-    const std::map< ::larcv::PlaneID_t, std::vector<larcv::Pixel2DCluster> >& Pixel2DClusterArray() const
-    { return _cluster_m; }
+    /// EventBase::clear() override
+    inline void clear()
+    { VoxelSet::Clear(); _meta = ImageMeta(); }
 
-    const std::map< ::larcv::PlaneID_t, larcv::ImageMeta>& MetaArray() const
-    { return _meta_m; }
+    /// Meta getter
+    inline const ImageMeta& Meta() const
+    { return _meta; }
 
-    const std::map< ::larcv::PlaneID_t, std::vector< ::larcv::ImageMeta> >& ClusterMetaArray() const
-    { return _cluster_meta_m; }
-
-    /// Set ImageMeta
-    void SetMeta(const larcv::PlaneID_t plane, const ImageMeta& meta)
-    { _meta_m[plane] = meta;}
-
-    /// Insert larcv::Pixel2D into a collection
-    void Append(const larcv::PlaneID_t plane, const Pixel2D& pixel);
-    /// Insert larcv::Pixel2DCluster into a collection
-    void Append(const larcv::PlaneID_t plane, const Pixel2DCluster& cluster);
-    /// Insert larcv::Pixel2DCluster into a collection
-    void Append(const larcv::PlaneID_t plane, const Pixel2DCluster& cluster, const ImageMeta&);
-    
-#ifndef __CINT__
-    /// Emplace larcv::Pixel2D into a collection
-    void Emplace(const larcv::PlaneID_t plane, Pixel2D&& pixel);
-    /// Emplace larcv::Pixel2DCluster into a collection
-    void Emplace(const larcv::PlaneID_t plane, Pixel2DCluster&& cluster, const ImageMeta&);
-#endif
+    /// Meta setter
+    inline void Meta(const ImageMeta& meta) const
+    { VoxelSet::Clear(); _meta = meta; }
 
   private:
-
-    std::map< ::larcv::PlaneID_t, std::vector< ::larcv::Pixel2D > >        _pixel_m;
-    std::map< ::larcv::PlaneID_t, std::vector< ::larcv::Pixel2DCluster > > _cluster_m;
-    std::map< ::larcv::PlaneID_t, ::larcv::ImageMeta > _meta_m;
-    std::map< ::larcv::PlaneID_t, std::vector< ::larcv::ImageMeta > > _cluster_meta_m;
+    ImageMeta _meta;
   };
+}
+
+#include "IOManager.h"
+namespace larcv {
+
+  // Template instantiation for IO
+  template<> inline std::string product_unique_name<larcv::EventPixel2D>() { return "pixel2d"; }
+  template EventPixel2D& IOManager::get_data<larcv::EventPixel2D>(const std::string&);
+  template EventPixel2D& IOManager::get_data<larcv::EventPixel2D>(const ProducerID_t);
 
   /**
      \class larcv::EventPixel2D
@@ -96,7 +68,8 @@ namespace larcv {
   class EventPixel2DFactory : public DataProductFactoryBase {
   public:
     /// ctor
-    EventPixel2DFactory() { DataProductFactory::get().add_factory(kProductPixel2D,this); }
+    EventPixel2DFactory()
+    { DataProductFactory::get().add_factory(product_unique_name<larcv::EventPixel2D>(),this); }
     /// dtor
     ~EventPixel2DFactory() {}
     /// create method

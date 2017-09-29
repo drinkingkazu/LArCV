@@ -24,7 +24,7 @@
 #include "EventBase.h"
 #include "Base/larbys.h"
 #include "Base/PSet.h"
-//#include "ProductMap.h"
+#include "ProductMap.h"
 namespace larcv {
   /**
     \class IOManager
@@ -50,7 +50,8 @@ namespace larcv {
     void add_in_file(const std::string filename, const std::string dirname="");
     void clear_in_file();
     void set_out_file(const std::string name);
-    ProducerID_t producer_id(const ProducerName_t& name) const;
+    ProducerID_t producer_id(const ProductType_t type, const std::string& producer) const;
+    //ProductType_t product_type(const size_t id) const;
     void configure(const PSet& cfg);
     bool initialize();
     bool read_entry(const size_t index,bool force_reload=false);
@@ -63,43 +64,35 @@ namespace larcv {
     size_t get_n_entries() const
     { return (_in_tree_entries ? _in_tree_entries : _out_tree_entries); }
     
-    EventBase* get_data(const std::string& type, const std::string& producer);
+    EventBase* get_data(const ProductType_t type, const std::string& producer);
     EventBase* get_data(const ProducerID_t id);
 
     //
     // Some template class getter for auto-cast
     //
-
     template <class T> T& get_data(const std::string& producer)
-    { return *((T*)(this->get_data(product_unique_name<T>(),producer))); }
+    { return *((T*)(get_data(ProductType<T>(),producer))); }
 
     template <class T> T& get_data(const ProducerID_t id)
     {
-      if(id >= _product_type_v.size()) {
-	LARCV_CRITICAL() << "Invalid producer id: " << id << " requested " << std::endl;
-	throw larbys();
-      }
-      auto ptr = this->get_data(id); 
-      if(product_unique_name<T>() != _product_type_v[id]) {
-	LARCV_CRITICAL() << "Unmatched type (in memory type = " << _product_type_v[id]
-			 << " while specialization type = " << product_unique_name<T>()
+      auto const type = product_type(id);
+      if(ProductType<T>() != type) {
+	LARCV_CRITICAL() << "Unmatched type (in memory type = " << ProductName(type)
+			 << " while specialization type = " << ProductName(ProductType<T>())
 			 << std::endl;
 	throw larbys();
       }
-      return *((T*)(ptr));
+      return *((T*)(get_data(id)));
     }
 
     const EventBase& event_id() const { return ( _set_event_id.valid() ? _set_event_id : _event_id ); }
 
     const EventBase& last_event_id() const { return _last_event_id; }
 
-    const std::vector<std::string> producer_list(const std::string type) const
+    const std::vector<std::string> producer_list(const ProductType_t type) const
     {
       std::vector<std::string> res;
-      for(auto const& key_value : _key_list) {
-	if(key_value.first.first != type) continue;
-	res.push_back(key_value.first.second);
-      }
+      for(auto const& key_value : _key_list[type]) res.push_back(key_value.first);
       return res;
     }
 
@@ -109,7 +102,7 @@ namespace larcv {
   private:
     void   set_id();
     void   prepare_input();
-    size_t register_producer(const ProducerName_t& name);
+    size_t register_producer(const ProductType_t type, const std::string& name);
 
     IOMode_t    _io_mode;
     bool        _prepared;
@@ -124,7 +117,7 @@ namespace larcv {
     std::string _out_file_name;
     std::vector<std::string>     _in_file_v;
     std::vector<std::string>     _in_dir_v;
-    std::map<larcv::ProducerName_t,larcv::ProducerID_t> _key_list;
+    std::vector<std::map<std::string,larcv::ProducerID_t> > _key_list;
     std::vector<TTree*>          _out_tree_v;
     std::vector<TChain*>         _in_tree_v;
     std::vector<size_t>          _in_tree_index_v;
