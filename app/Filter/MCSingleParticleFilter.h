@@ -43,7 +43,7 @@ namespace larcv {
 
   private:
 
-    std::string _roi_producer;
+    std::string _part_producer;
     double _shower_min_energy;
     double _track_min_energy;
     double _proton_min_energy;

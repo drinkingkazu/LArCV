@@ -26,7 +26,7 @@ namespace larcv {
   public:
     
     /// Default constructor
-    Voxel(VoxelID_t id=kINVALID_VOXEL3DID, float value=kINVALID_FLOAT);
+    Voxel(VoxelID_t id=kINVALID_VOXELID, float value=kINVALID_FLOAT);
     /// Default destructor
     ~Voxel(){}
     
@@ -91,7 +91,7 @@ namespace larcv {
   class VoxelSet {
   public:
     /// Default ctor
-    VoxelSet();
+    VoxelSet(){}
     /// Default dtor
     ~VoxelSet(){}
     /// getter

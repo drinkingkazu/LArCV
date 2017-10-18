@@ -1,9 +1,9 @@
 /**
- * \file ROI.h
+ * \file Particle.h
  *
  * \ingroup core_DataFormat
  * 
- * \brief Class def header for a class larcv::ROI
+ * \brief Class def header for a class larcv::Particle
  *
  * @author kazuhiro
  */
@@ -11,29 +11,26 @@
 /** \addtogroup core_DataFormat
 
     @{*/
-#ifndef __ROI_H__
-#define __ROI_H__
+#ifndef __PARTICLE_H__
+#define __PARTICLE_H__
 
 #include <iostream>
 #include "Vertex.h"
-#include "ImageMeta.h"
 #include "DataFormatTypes.h"
 namespace larcv {
 
   /**
-     \class ROI
+     \class Particle
      \brief Particle/Interaction-wise truth information data
   */
-  class ROI{
+  class Particle{
     
   public:
     
     /// Default constructor
-    ROI(larcv::ROIType_t type=larcv::kROIUnknown,
-	larcv::ShapeType_t shape=larcv::kShapeUnknown)
+    Particle(larcv::ShapeType_t shape=larcv::kShapeUnknown)
       : _index      (kINVALID_INDEX)
       , _shape      (shape)
-      , _type       (type )
       , _mcst_index (kINVALID_INDEX)
       , _mct_index  (kINVALID_INDEX)
       , _energy_deposit (0.)
@@ -52,19 +49,18 @@ namespace larcv {
     {}
     
     /// Default destructor
-    ~ROI(){}
+    ~Particle(){}
 
-    ROIIndex_t     Index         () const { return _index;          }
-    ROIType_t      Type          () const { return _type;           }
-    ShapeType_t    Shape         () const { return _shape;          }
-    MCSTIndex_t    MCSTIndex     () const { return _mcst_index;     }
-    MCTIndex_t     MCTIndex      () const { return _mct_index;      }
-    double         EnergyDeposit () const { return _energy_deposit; }
-    double         EnergyInit    () const { return _energy_init;    }
-    int            PdgCode       () const { return _pdg;            }
-    int            ParentPdgCode () const { return _parent_pdg;     }
-    unsigned int   TrackID       () const { return _trackid;        }
-    unsigned int   ParentTrackID () const { return _parent_trackid; }
+    ParticleIndex_t Index         () const { return _index;          }
+    ShapeType_t     Shape         () const { return _shape;          }
+    MCSTIndex_t     MCSTIndex     () const { return _mcst_index;     }
+    MCTIndex_t      MCTIndex      () const { return _mct_index;      }
+    double          EnergyDeposit () const { return _energy_deposit; }
+    double          EnergyInit    () const { return _energy_init;    }
+    int             PdgCode       () const { return _pdg;            }
+    int             ParentPdgCode () const { return _parent_pdg;     }
+    unsigned int    TrackID       () const { return _trackid;        }
+    unsigned int    ParentTrackID () const { return _parent_trackid; }
     const larcv::Vertex& Position() const { return _vtx;            }
     double         X  () const { return _vtx.X(); }
     double         Y  () const { return _vtx.Y(); }
@@ -81,8 +77,6 @@ namespace larcv {
     double         ParentPy () const { return _parent_py;      }
     double         ParentPz () const { return _parent_pz;      }
     const larcv::Vertex& ParentPosition () const { return _parent_vtx;}
-    const std::vector<larcv::ImageMeta>& BB() const { return _bb_v;  }
-    const ImageMeta& BB(PlaneID_t plane) const;
     short NuCurrentType() const { return _current_type; }
     short NuInteractionType() const { return _interaction_type; }
     const std::string& CreationProcess() const { return _process; }
@@ -92,8 +86,7 @@ namespace larcv {
     double         DistanceTravel() const { return _dist_travel; }
     const std::vector<float>& TypeScore() const { return _type_score_v; }
     
-    void Index         (ROIIndex_t id  )    { _index = id;         }
-    void Type          (ROIType_t type )    { _type  = type;       }
+    void Index         (ParticleIndex_t id  ) { _index = id;         }
     void Shape         (ShapeType_t shape ) { _shape = shape;      }
     void MCSTIndex     (MCSTIndex_t id )    { _mcst_index = id;    }
     void MCTIndex      (MCTIndex_t id )     { _mct_index = id;     }
@@ -109,8 +102,6 @@ namespace larcv {
     void ParentPosition (const larcv::Vertex& vtx) { _parent_vtx = vtx; }
     void ParentPosition (double x, double y, double z, double t) { _parent_vtx = Vertex(x,y,z,t); }
     void ParentMomentum (double px, double py, double pz) { _parent_px = px; _parent_py = py; _parent_pz = pz; }
-    void AppendBB      (const larcv::ImageMeta& bb);
-    void SetBB         (const std::vector<larcv::ImageMeta>& bb_v);
     void NuCurrentType (short curr) { curr = -1; _current_type = curr; }
     void NuInteractionType (short itype) { itype = -1; _interaction_type = itype; }
     void CreationProcess (const std::string& proc) { _process = proc; }
@@ -127,9 +118,8 @@ namespace larcv {
     
   private:
 
-    ROIIndex_t   _index;
+    ParticleIndex_t   _index;
     ShapeType_t  _shape;
-    ROIType_t    _type;
     MCSTIndex_t  _mcst_index;
     MCTIndex_t   _mct_index;
 
@@ -143,7 +133,6 @@ namespace larcv {
     double       _px,_py,_pz;
     Vertex       _parent_vtx;
     double       _parent_px, _parent_py, _parent_pz;
-    std::vector<larcv::ImageMeta> _bb_v;
     short _current_type;
     short _interaction_type;
 

@@ -17,7 +17,7 @@ namespace larcv {
 
   void PyImageMaker::initialize()
   {
-    _run = _subrun = _event = kINVALID_SIZE;
+    _run = _event = kINVALID_SIZE;
     _image_v.clear();
   }
   
@@ -54,15 +54,14 @@ namespace larcv {
     _image_v.clear();
 
     auto const& id = mgr.event_id();
-    if(id.run() != kINVALID_SIZE || id.subrun() != kINVALID_SIZE || id.event() != kINVALID_SIZE) {
+    if(id.run() != kINVALID_SIZE || id.event() != kINVALID_SIZE) {
       if(id.run()    != _run    ) LARCV_WARNING() << "Overwriting run number: " << id.run()    << " => " << _run    << std::endl;
-      if(id.subrun() != _subrun ) LARCV_WARNING() << "Overwriting run number: " << id.subrun() << " => " << _subrun << std::endl;
       if(id.event()  != _event  ) LARCV_WARNING() << "Overwriting run number: " << id.event()  << " => " << _event  << std::endl;
     }
 
-    mgr.set_id(_run,_subrun,_event);
+    mgr.set_id(_run,_event);
 
-    _run = _subrun = _event = kINVALID_SIZE;
+    _run = _event = kINVALID_SIZE;
     return true;
   }
 

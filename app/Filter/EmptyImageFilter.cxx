@@ -21,8 +21,8 @@ namespace larcv {
 
   bool EmptyImageFilter::process(IOManager& mgr)
   {
-    auto ev_image = (EventImage2D*)(mgr.get_data(kProductImage2D,_image_producer));
-    if(!ev_image || ev_image->Image2DArray().empty()) return false;
+    auto const& ev_image = mgr.get_data<larcv::EventImage2D>(_image_producer);
+    if(ev_image.Image2DArray().empty()) return false;
     return true;
   }
 

@@ -81,9 +81,9 @@ namespace larcv {
   VoxelID_t Voxel3DMeta::ID(double x, double y, double z) const
   {
     if(!_valid) throw larbys("Voxel3DMeta::ID cannot be called on invalid meta!");
-    if(x > _xmax || x < _xmin) return kINVALID_VOXEL3DID;
-    if(y > _ymax || y < _ymin) return kINVALID_VOXEL3DID;
-    if(z > _zmax || z < _zmin) return kINVALID_VOXEL3DID;
+    if(x > _xmax || x < _xmin) return kINVALID_VOXELID;
+    if(y > _ymax || y < _ymin) return kINVALID_VOXELID;
+    if(z > _zmax || z < _zmin) return kINVALID_VOXELID;
 
     VoxelID_t xindex = (x - _xmin) / _xlen;
     VoxelID_t yindex = (y - _ymin) / _ylen;

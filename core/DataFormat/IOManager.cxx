@@ -207,11 +207,9 @@ namespace larcv {
     // Set event ID
     if(_event_id.valid()) {
       _product_ptr_v[id]->_run    = _event_id.run();
-      _product_ptr_v[id]->_subrun = _event_id.subrun();
       _product_ptr_v[id]->_event  = _event_id.event();
     }else if(_set_event_id.valid()) {
       _product_ptr_v[id]->_run    = _set_event_id.run();
-      _product_ptr_v[id]->_subrun = _set_event_id.subrun();
       _product_ptr_v[id]->_event  = _set_event_id.event();
     }
 
@@ -411,7 +409,7 @@ namespace larcv {
 	if(!p->valid()) {
 	  LARCV_CRITICAL() << "Product by a producer " << p->producer()
 			   << " has an invalid event id: (" 
-			   << p->run() << "," << p->subrun() << "," << p->event() << ")" << std::endl;
+			   << p->run() << "," << p->event() << ")" << std::endl;
 	  throw larbys("Must set an event ID to store!");
 	}
       }
@@ -434,7 +432,7 @@ namespace larcv {
 	  continue;
 	}
 	if(!p->valid()) {
-	  LARCV_CRITICAL() << "Invalid event id: (" << p->run() << "," << p->subrun() << "," << p->event() << ")" << std::endl;
+	  LARCV_CRITICAL() << "Invalid event id: (" << p->run() << "," << p->event() << ")" << std::endl;
 	  throw larbys("Must set an event ID to store!");
 	}
       }
@@ -466,14 +464,12 @@ namespace larcv {
     if(_set_event_id.valid()) {
       LARCV_DEBUG() << "Set _last_event_id to externally set values:"
 		    << " run = " << _set_event_id.run() 
-		    << " subrun = " << _set_event_id.subrun() 
 		    << " event = " << _set_event_id.event() << std::endl;
       _last_event_id = _set_event_id;
     } 
     else {
       LARCV_DEBUG() << "Set _last_event_id to inherited values:"
 		    << " run = " << _event_id.run() 
-		    << " subrun = " << _event_id.subrun() 
 		    << " event = " << _event_id.event() << std::endl;
       _last_event_id = _event_id;
     }
@@ -542,12 +538,12 @@ namespace larcv {
       auto& ptr = _product_ptr_v[id];
       // retrieve event_id if not yet done
       if(!_event_id.valid()) {
-	LARCV_INFO() << "Setting event id (" << ptr->run() << "," << ptr->subrun() << "," << ptr->event() << ")" << std::endl;
+	LARCV_INFO() << "Setting event id (" << ptr->run() << "," << ptr->event() << ")" << std::endl;
 	_event_id = (EventBase)(*ptr);
       }else if(ptr->valid() && _event_id != *ptr) {
-	LARCV_CRITICAL() << "Event alignment error (run,subrun,event) detected: "
-			 << "Current (" << _event_id.run() << "," << _event_id.subrun() << "," << _event_id.event() << ") vs. "
-			 << "Read-in (" << ptr->run() << "," << ptr->subrun() << "," << ptr->event() << ")" << std::endl;
+	LARCV_CRITICAL() << "Event alignment error (run,event) detected: "
+			 << "Current (" << _event_id.run() << "," << _event_id.event() << ") vs. "
+			 << "Read-in (" << ptr->run() << "," << ptr->event() << ")" << std::endl;
 	throw larbys();
       }
     }
@@ -555,7 +551,7 @@ namespace larcv {
     return _product_ptr_v[id];
   }
 
-  void IOManager::set_id(const size_t run, const size_t subrun, const size_t event) {
+  void IOManager::set_id(const size_t run, const size_t event) {
 
     if(_io_mode == kREAD) {
       LARCV_CRITICAL() << "Cannot change event id in kREAD mode" << std::endl;
@@ -564,13 +560,12 @@ namespace larcv {
 
     EventBase tmp;
     tmp._run    = run;
-    tmp._subrun = subrun;
     tmp._event  = event;
 
     LARCV_INFO() << "Request to set event id: " << tmp.event_key() << std::endl;
     
     if(_set_event_id.valid() && _set_event_id != tmp)
-      LARCV_INFO() << "Force setting (run,subrun,event) ID as (" << run << "," << subrun << "," << event << ")" << std::endl;
+      LARCV_INFO() << "Force setting (run,event) ID as (" << run << "," << event << ")" << std::endl;
 
     _set_event_id = tmp;
 
@@ -596,11 +591,10 @@ namespace larcv {
 	if(p->valid()) {
 	  LARCV_WARNING() << "Override event id for product " << _product_type_v[i]
 			  << " by " << p->producer()
-			  << " from (" << p->run() << "," << p->subrun() << "," << p->event() << ")"
-			  << " to (" << _event_id.run() << "," << _event_id.subrun() << "," << _event_id.event() << ")" << std::endl;
+			  << " from (" << p->run() << "," << p->event() << ")"
+			  << " to (" << _event_id.run() << "," << _event_id.event() << ")" << std::endl;
 	}
 	p->_run = _event_id.run();
-	p->_subrun = _event_id.subrun();
 	p->_event = _event_id.event();
       }
       

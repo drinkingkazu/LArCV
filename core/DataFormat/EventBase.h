@@ -23,7 +23,7 @@ namespace larcv {
   class DataProductFactory;
   /**
     \class EventBase
-    \brief Base class for an event data product (what is stored in output file), holding run/subrun/event ID + producer name.
+    \brief Base class for an event data product (what is stored in output file), holding run/event ID + producer name.
   */
   class EventBase{
     friend class IOManager;
@@ -33,57 +33,52 @@ namespace larcv {
     /// Default constructor
     EventBase()
       : _run    (kINVALID_SIZE)
-      , _subrun (kINVALID_SIZE)
       , _event  (kINVALID_SIZE)
     {}
     /// Copy ctor
     EventBase(const EventBase& rhs)
       : _producer(rhs._producer)
       , _run(rhs._run)
-      , _subrun(rhs._subrun)
       , _event(rhs._event)
     {}
 				      
     /// Default destructor
     virtual ~EventBase(){}
-    /// Set all run/subrun/event to kINVALID_SIZE
+    /// Set all run/event to kINVALID_SIZE
     virtual void clear();
     /// Producer name getter
     const std::string & producer() const { return _producer; }
     /// Run number getter
     size_t run()    const { return _run;    }
-    /// SubRun number getter
-    size_t subrun() const { return _subrun; }
     /// Event number getter
     size_t event()  const { return _event;  }
-    /// Make sure run/subrun/event ID is set
+    /// Setter
+    void set(size_t run, size_t event) { _run = run; _event=event;}
+    /// Make sure run/event ID is set
     bool valid() const
-    { return !(_run == kINVALID_SIZE || _subrun == kINVALID_SIZE || _event == kINVALID_SIZE); }
-    /// Comparison opearator for run/subrun/event id
+    { return !(_run == kINVALID_SIZE || _event == kINVALID_SIZE); }
+    /// Comparison opearator for run/event id
     inline bool operator==(const EventBase& rhs) const
-    { return (_run == rhs.run() && _subrun == rhs.subrun() && _event == rhs.event()); }
-    /// Comparison opearator for run/subrun/event id
+    { return (_run == rhs.run() && _event == rhs.event()); }
+    /// Comparison opearator for run/event id
     inline bool operator!=(const EventBase& rhs) const
     { return !((*this) == rhs); }
-    /// Comparison opearator for run/subrun/event id (for sorted container like std::set and/or std::map)
+    /// Comparison opearator for run/event id (for sorted container like std::set and/or std::map)
     inline bool operator<(const EventBase& rhs) const
     {
       if(_run < rhs.run()) return true;
       if(_run > rhs.run()) return false;
-      if(_subrun < rhs.subrun()) return true;
-      if(_subrun > rhs.subrun()) return false;
       if(_event < rhs.event()) return true;
       if(_event > rhs.event()) return false;
       return false;
     }
 
-    /// Formatted string key getter (a string key consists of 0-padded run, subrun, and event id)
+    /// Formatted string key getter (a string key consists of 0-padded run and event id)
     std::string event_key() const;
 
   private:
     std::string _producer; ///< Producer name string
     size_t _run;    ///< LArSoft run number
-    size_t _subrun; ///< LArSoft sub-run number
     size_t _event;  ///< LArSoft event number
   };
 }

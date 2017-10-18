@@ -2,18 +2,20 @@
 #define __LARCV_VOXEL_CXX__
 
 #include "Voxel.h"
+#include <iostream>
+
 namespace larcv {
 
   Voxel::Voxel(VoxelID_t id, float value)
   { _id = id; _value = value; }
-  
-  void VoxelSet::Add(const Voxel3D& vox)
+
+  void VoxelSet::Add(const Voxel& vox)
   {
-    Voxel3D copy(vox);
+    Voxel copy(vox);
     Emplace(std::move(copy));
   }
   
-  void VoxelSet::Emplace(Voxel3D&& vox)
+  void VoxelSet::Emplace(Voxel&& vox)
   {
     // In case it's empty or greater than the last one
     if(_voxel_v.empty() || _voxel_v.back() < vox) {
@@ -35,8 +37,10 @@ namespace larcv {
     auto iter = std::lower_bound(_voxel_v.begin(), _voxel_v.end(), vox);
 
     // Cannot be the end
-    if( iter == _voxel_v.end() )
-      throw larbys("VoxelSet sorting logic error!");
+    if( iter == _voxel_v.end() ) {
+      std::cerr << "VoxelSet sorting logic error!" << std::endl;
+      throw std::exception();
+    }
     
     // If found, merge
     if( !(vox < (*iter)) ) {

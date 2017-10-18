@@ -3,7 +3,7 @@
 
 #include "VtxInRegion.h"
 
-#include "DataFormat/EventROI.h"
+#include "DataFormat/EventParticle.h"
 
 namespace larcv {
 
@@ -20,7 +20,7 @@ namespace larcv {
     auto pt2  = cfg.get<std::vector<double>>("YZPoint2");
     _above = cfg.get<bool>("Above");
     _buffer = cfg.get<double>("Buffer");
-    _roi_producer = cfg.get<std::string>("ROIProducer");
+    _part_producer = cfg.get<std::string>("ParticleProducer");
     
     if (pt1.size() != 2 or pt2.size() != 2) throw larbys("pt1 and pt2 not of size 2");
     
@@ -50,25 +50,22 @@ namespace larcv {
   bool VtxInRegion::process(IOManager& mgr)
   {
     LARCV_INFO() << "start" << std::endl;
-    auto event_roi = (EventROI*)mgr.get_data(kProductROI,_roi_producer);
+    auto const& event_part = mgr.get_data<larcv::EventParticle>(_part_producer);
 
-    const ROI* nu_roi;
-    for (const auto& roi : event_roi->ROIArray()) {
-      if (roi.Type() == 2) { 
-	nu_roi = &roi; 
-	break; 
-      }
+    for(auto const& part : event_part) {
+
+      if(part.MCTIndex() == kINVALID_USHORT) continue;
+
+      LARCV_INFO() << "Checking (Y,Z) : (" << part.Y() << "," << part.Z() << ")\n";
+      if ( in_region(part.Y(),part.Z()) ) 
+	{ 
+	  LARCV_INFO() << "It's in the region return false to exclude\n";
+	  return false;
+	}
+      
+      LARCV_INFO() << "return true" << std::endl;
+      return true;
     }
-    
-    LARCV_INFO() << "Checking (Y,Z) : (" << nu_roi->Y() << "," << nu_roi->Z() << ")\n";
-    if ( in_region(nu_roi->Y(),nu_roi->Z()) ) 
-      { 
-	LARCV_INFO() << "It's in the region return false to exclude\n";
-	return false;
-      }
-
-    LARCV_INFO() << "return true" << std::endl;
-    return true;
   }
   
   

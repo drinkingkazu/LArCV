@@ -37,15 +37,14 @@ namespace larcv {
     virtual ~EventPixel2D(){}
     
     /// EventBase::clear() override
-    inline void clear()
-    { VoxelSet::Clear(); _meta = ImageMeta(); }
+    void clear();
 
     /// Meta getter
     inline const ImageMeta& Meta() const
     { return _meta; }
 
     /// Meta setter
-    inline void Meta(const ImageMeta& meta) const
+    inline void Meta(const ImageMeta& meta)
     { VoxelSet::Clear(); _meta = meta; }
 
   private:

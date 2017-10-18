@@ -32,15 +32,6 @@
 */
 namespace larcv {
 
-  /**
-     \struct Point2D
-     Simple 2D point struct (unit of "x" and "y" are not defined here and app specific)
-  */
-  struct Point2D {
-    double x, y;
-    Point2D(double xv=0, double yv=0) : x(xv), y(yv) {}
-  };
-
   /// Used as an invalid value identifier for long long
   const long long          kINVALID_LONGLONG  = std::numeric_limits< long long          >::max();
   /// Used as an invalid value identifier for unsigned long long

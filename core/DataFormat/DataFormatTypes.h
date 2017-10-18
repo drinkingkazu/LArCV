@@ -6,12 +6,21 @@
 #include <set>
 namespace larcv {
 
+  /**
+     \struct Point2D
+     Simple 2D point struct (unit of "x" and "y" are not defined here and app specific)
+  */
+  struct Point2D {
+    double x, y;
+    Point2D(double xv=0, double yv=0) : x(xv), y(yv) {}
+  };
+
   /// Invalid rep for vector index
   static const unsigned short kINVALID_INDEX = kINVALID_USHORT;
   /// Image index type for Image2D within EventImage2D  
   typedef unsigned short ImageIndex_t;
-  /// ROI index type for ROI within EventROI
-  typedef unsigned short ROIIndex_t;
+  /// ROI index type for Particle within EventROI
+  typedef unsigned short ParticleIndex_t;
 
   /// "ID" of MCShower/MCTrack in terms of its index number in the collection std::vector
   typedef unsigned short MCSTIndex_t;
@@ -19,13 +28,17 @@ namespace larcv {
   typedef unsigned short MCTIndex_t;
   /// "ID" for wire planes
   typedef unsigned short PlaneID_t;
+  /// "ID" for a set of voxels
+  typedef unsigned short InstanceID_t;
+  /// Invalid rep for InstanceID_t
+  static const unsigned short kINVALID_INSTANCEID = kINVALID_USHORT;
   /// Invalid plane definition
   static const PlaneID_t kINVALID_PLANE = kINVALID_USHORT;
 
   /// "ID" for Voxel3D
-  typedef unsigned long long Voxel3DID_t;
+  typedef unsigned long long VoxelID_t;
   /// Invalid Voxel3DID_t definition
-  static const Voxel3DID_t kINVALID_VOXEL3DID = kINVALID_ULONGLONG;
+  static const VoxelID_t kINVALID_VOXELID = kINVALID_ULONGLONG;
 
   /// Channel status constants
   namespace chstatus {
@@ -54,21 +67,6 @@ namespace larcv {
     kShapeShower,  ///< Shower
     kShapeTrack,   ///< Track
     kShapeUnknown  ///< LArbys
-  };
-
-  /// larcv::ROI types, used to define classification class typically
-  enum ROIType_t {
-    kROIUnknown=0, ///< LArbys
-    kROICosmic,    ///< Cosmics
-    kROIBNB,       ///< BNB
-    kROIEminus,    ///< Electron
-    kROIGamma,     ///< Gamma
-    kROIPizero,    ///< Pi0
-    kROIMuminus,   ///< Muon
-    kROIKminus,    ///< Kaon
-    kROIPiminus,   ///< Charged Pion
-    kROIProton,    ///< Proton
-    kROITypeMax    ///< enum element counter
   };
 
   /// "ID" of MCParticles in terms of its G4 track ID (unless mixing multiple MC samples)

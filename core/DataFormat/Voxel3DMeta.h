@@ -14,6 +14,9 @@
 #ifndef VOXEL3DMETA_H
 #define VOXEL3DMETA_H
 
+#include "DataFormatTypes.h"
+#include <array>
+
 namespace larcv {
 
   /**

@@ -51,7 +51,7 @@ namespace larcv {
 
     bool _above;
     double _buffer;
-    std::string _roi_producer;
+    std::string _part_producer;
     double _slope;
     double _yinter;
 

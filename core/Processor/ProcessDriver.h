@@ -74,12 +74,12 @@ namespace larcv {
     // Information setter method
     //
     /// A method to force re-set the run/subrun/event ID of a currently processed event, useful when "creating an event".
-    void set_id(size_t run, size_t subrun, size_t event)
-    { _io.set_id(run,subrun,event); }
+    void set_id(size_t run, size_t event)
+    { _io.set_id(run,event); }
     //
     // Information access methods
     //
-    /// Returns larcv::EventBase object that contains an "ID" (run/subrun/event integers)
+    /// Returns larcv::EventBase object that contains an "ID" (run/event integers)
     const EventBase& event_id() const { return _io.last_event_id(); }
     /// Returns a unique ID (integer) assigned for a process module (provide the module's name in argument)
     ProcessID_t process_id(std::string name) const;

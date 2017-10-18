@@ -11,7 +11,6 @@ typedef _object PyObject;
 #endif
 
 #include "DataFormat/Image2D.h"
-#include "DataFormat/ROI.h"
 
 namespace larcv {
 /// Utility function: call one-time-only numpy module initialization (you don't

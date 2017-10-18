@@ -15,12 +15,10 @@
 #define INSTANCEPARTITION_H
 
 #include <iostream>
-#include <array>
+//#include <array>
 #include "DataFormatTypes.h"
 namespace larcv {
 
-  typedef unsigned short InstanceID_t;
-  
   /**
      \class IPartition
      User defined class IPartition ... these comments are used to generate
@@ -36,16 +34,18 @@ namespace larcv {
     IPartition()
     {
       for(size_t i=0; i<PARTITION_SIZE; ++i)
-	{_id_array[i] = kINVALID_SIZE; _fraction_array[i]=0.;}
+	{_id_array[i] = kINVALID_INSTANCEID; _fraction_array[i]=0.;}
     }
     
     /// Default destructor
     ~IPartition(){}
 
-    inline const std::array<InstanceID_t,PARTITION_SIZE>& IDs() const
+    //inline const std::array<InstanceID_t,PARTITION_SIZE>& IDs() const
+    inline const InstanceID_t* IDs() const
     { return _id_array; }
 
-    inline const std::array<float,PARTITION_SIZE>& Fractions() const
+    //inline const std::array<float,PARTITION_SIZE>& Fractions() const
+    inline const float* Fractions() const
     { return _fraction_array; }
 
     inline float Fraction(const InstanceID_t id) const
@@ -58,8 +58,10 @@ namespace larcv {
 
   private:
     
-    std::array<InstanceID_t,larcv::IPartition::PARTITION_SIZE> _id_array;
-    std::array<float,larcv::IPartition::PARTITION_SIZE> _fraction_array;
+    //std::array<InstanceID_t,larcv::IPartition::PARTITION_SIZE> _id_array;
+    //std::array<float,larcv::IPartition::PARTITION_SIZE> _fraction_array;
+    InstanceID_t _id_array[PARTITION_SIZE];
+    float _fraction_array[PARTITION_SIZE];
   };
 }
 

@@ -16,7 +16,8 @@
 
 #include <iostream>
 #include "EventBase.h"
-#include "Voxel3D.h"
+#include "Voxel.h"
+#include "Voxel3DMeta.h"
 #include "DataProductFactory.h"
 namespace larcv {
   /**
@@ -35,15 +36,14 @@ namespace larcv {
     ~EventVoxel3D(){}
 
     /// EventBase::clear() override
-    inline void clear()
-    { VoxelSet::Clear(); _meta.Clear(); }
+    void clear();
 
     /// Meta getter
     inline const Voxel3DMeta& Meta() const
     { return _meta; }
     
     /// Meta setter
-    inline void Meta(const Voxel3DMeta& meta) const
+    inline void Meta(const Voxel3DMeta& meta)
     { VoxelSet::Clear(); _meta = meta; }
 
   private:
