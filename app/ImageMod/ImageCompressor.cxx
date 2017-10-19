@@ -1,18 +1,18 @@
-#ifndef __COMPRESSOR_CXX__
-#define __COMPRESSOR_CXX__
+#ifndef __IMAGECOMPRESSOR_CXX__
+#define __IMAGECOMPRESSOR_CXX__
 
-#include "Compressor.h"
+#include "ImageCompressor.h"
 #include "DataFormat/EventImage2D.h"
 
 namespace larcv {
 
-  static CompressorProcessFactory __global_CompressorProcessFactory__;
+  static ImageCompressorProcessFactory __global_ImageCompressorProcessFactory__;
 
-  Compressor::Compressor(const std::string name)
+  ImageCompressor::ImageCompressor(const std::string name)
     : ProcessBase(name)
   {}
     
-  void Compressor::configure(const PSet& cfg)
+  void ImageCompressor::configure(const PSet& cfg)
   {
     _image_producer_v  = cfg.get<std::vector<std::string> >("ImageProducer");
     _row_compression_v = cfg.get<std::vector<size_t     > >("RowCompression");
@@ -30,7 +30,7 @@ namespace larcv {
     }
   }
 
-  void Compressor::initialize()
+  void ImageCompressor::initialize()
   {
     for(size_t i=0; i<_mode_v.size(); ++i) {
 
@@ -53,7 +53,7 @@ namespace larcv {
     }
   }
 
-  bool Compressor::process(IOManager& mgr)
+  bool ImageCompressor::process(IOManager& mgr)
   {
     // Check if compression factor works
     for(size_t i=0; i<_mode_v.size(); ++i) {
@@ -61,8 +61,7 @@ namespace larcv {
       auto const& image_producer  = _image_producer_v[i];
       auto const& row_compression = _row_compression_v[i];
       auto const& col_compression = _col_compression_v[i];
-      
-      auto ev_image = (EventImage2D*)(mgr.get_data(kProductImage2D,image_producer));
+      auto ev_image = (EventImage2D*)(mgr.get_data("image_2d",image_producer));
       if(!ev_image) {
 	LARCV_CRITICAL() << "Input image not found by producer name " << image_producer << std::endl;
 	throw larbys();
@@ -92,7 +91,7 @@ namespace larcv {
       auto const& row_compression = _row_compression_v[i];
       auto const& col_compression = _col_compression_v[i];
       auto const& mode = _mode_v[i];
-      auto ev_image = (EventImage2D*)(mgr.get_data(kProductImage2D,image_producer));
+      auto ev_image = (EventImage2D*)(mgr.get_data("image_2d",image_producer));
       
       std::vector<larcv::Image2D> image_v;
       ev_image->Move(image_v);
@@ -110,7 +109,7 @@ namespace larcv {
   }
   
 
-  void Compressor::finalize()
+  void ImageCompressor::finalize()
   {}
 
 }

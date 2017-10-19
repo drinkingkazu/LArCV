@@ -18,6 +18,7 @@
 #include <vector>
 #include <cstdlib>
 #include "ImageMeta.h"
+#include "BBox.h"
 
 namespace larcv {
 
@@ -76,6 +77,8 @@ namespace larcv {
     void reverse_copy(size_t row, size_t col, const std::vector<short>& src, size_t nskip=0, size_t num_pixel=0);
     /// Crop specified region via crop_meta to generate a new larcv::Image2D
     Image2D crop(const ImageMeta& crop_meta) const;
+    /// Crop specified region via bbox to generate a new larcv::Image2D
+    Image2D crop(const BBox2D& bbox,const DistanceUnit_t unit) const;
     /// 1D const reference array getter
     const std::vector<float>& as_vector() const 
     { return _img; }

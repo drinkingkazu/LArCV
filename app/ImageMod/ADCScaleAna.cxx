@@ -25,8 +25,12 @@ namespace larcv {
 
   bool ADCScaleAna::process(IOManager& mgr)
   {
-    static ProducerID_t id = mgr.producer_id(kProductImage2D,_image_producer);
-
+    static ProducerID_t id = kINVALID_SIZE;
+    if(id==kINVALID_SIZE) {
+      ProducerName_t name_id("image2D",_image_producer);
+      id = mgr.producer_id(name_id);
+    }
+    
     auto event_image = (EventImage2D*)(mgr.get_data(id));
 
     for(auto const& img : event_image->Image2DArray()) {

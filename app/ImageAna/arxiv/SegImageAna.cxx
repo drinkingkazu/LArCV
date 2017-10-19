@@ -18,24 +18,13 @@ namespace larcv {
     _image_producer   = cfg.get<std::string>("ImageProducer");
     _label_producer   = cfg.get<std::string>("LabelProducer");
     _segment_producer = cfg.get<std::string>("SegmentProducer");
-    _roi_producer = cfg.get<std::string>("ROIProducer");
+    _part_producer    = cfg.get<std::string>("ParticleProducer");
 
     _image_channel = cfg.get<size_t>("ImageChannel");
     _label_channel = cfg.get<size_t>("LabelChannel");
     _pi_thresh     = cfg.get<double>("PIThreshold");
 
     auto type_def = cfg.get<std::vector<unsigned short> >("ClassTypeDef");
-    if (type_def.size() != kROITypeMax) {
-      LARCV_CRITICAL() << "ClassTypeDef length is " << type_def.size()
-                       << " but it needs to be length kROITypeMax (" << kROITypeMax << ")!" << std::endl;
-      throw larbys();
-    }
-    for (auto const& v : type_def) {
-      if (v >= kROITypeMax) {
-        LARCV_CRITICAL() << "ClassTypeDef contains invalid value (" << v << ") for ROIType_t!" << std::endl;
-        throw larbys();
-      }
-    }
     auto type_to_class = cfg.get<std::vector<unsigned short> >("ClassTypeList");
     if (type_to_class.empty()) {
       LARCV_CRITICAL() << "ClassTypeList needed to define classes!" << std::endl;

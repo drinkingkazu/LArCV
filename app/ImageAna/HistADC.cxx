@@ -3,8 +3,7 @@
 
 #include "HistADC.h"
 #include "DataFormat/EventImage2D.h"
-#include "DataFormat/ROI.h"
-#include "DataFormat/EventROI.h"
+#include "DataFormat/EventParticle.h"
 
 namespace larcv {
 
@@ -16,12 +15,11 @@ namespace larcv {
     
   void HistADC::configure(const PSet& cfg)
   {
-    fHiResCropProducer = cfg.get<std::string>("HiResCropProducer");
-    fROIProducer       = cfg.get<std::string>("ROIProducer");
+    fImageProducer     = cfg.get<std::string>("ImageProducer");
+    fParticleProducer  = cfg.get<std::string>("ParticleProducer");
     fPlane0Thresh      = cfg.get<int>("Plane0Thresh");
     fPlane1Thresh      = cfg.get<int>("Plane1Thresh");
     fPlane2Thresh      = cfg.get<int>("Plane2Thresh");
-    fFillCosmic        = cfg.get<bool>("FillCosmic");
   }
 
   void HistADC::initialize()
@@ -35,42 +33,26 @@ namespace larcv {
 
     m_tree = new TTree("adctree","ADC/pixel summary of cropped regions");
     m_tree->Branch( "plane",&m_plane,"plane/I");
-    m_tree->Branch( "isneutrino",&m_neutrino,"isneutrino/I");
     m_tree->Branch( "npixels",&m_npixels,"npixels/I");
     m_tree->Branch( "adcsum",&m_sum,"adcsum/F");
-    m_tree->Branch( "edep",&m_edep,"edep/F");
-    
   }
 
   bool HistADC::process(IOManager& mgr)
   {
 
-    auto event_image = (larcv::EventImage2D*)(mgr.get_data(kProductImage2D,fHiResCropProducer));
-    auto event_roi         = (larcv::EventROI*)(mgr.get_data(kProductROI,fROIProducer));
+    auto const& event_image = mgr.get_data<larcv::EventImage2D>(fImageProducer);
+    auto const& event_part  = mgr.get_data<larcv::EventParticle>(fParticleProducer);
 
-    auto roi = event_roi->at(0);
+    auto const& part = event_part.front();
 
     // if ( fFillCosmic && roi.Type()!=kROICosmic) 
     //   return true;
     // if ( !fFillCosmic && roi.Type()==kROICosmic )
     //   return true;
 
-    if ( roi.Type()!=kROICosmic ) {
-      m_neutrino = 1;
-      m_edep = roi.EnergyDeposit();
-    }
-    else {
-      m_neutrino = 0;
-      m_edep = 0.;
-    }
-
-
-    //m_neutrino = ( fFillCosmic ) ? 0 : 1;
-
-    for ( auto const& img: event_image->Image2DArray() ) {
+    for ( auto const& img: event_image.Image2DArray()) {
       auto const plane = img.meta().plane();
       if(m_hADC_v.size() <= plane) m_hADC_v.resize(plane+1,nullptr);
-      
 
       // if(!m_hADC_v[plane]) {
       // 	if (fFillCosmic )

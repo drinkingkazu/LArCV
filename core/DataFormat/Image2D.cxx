@@ -258,6 +258,50 @@ namespace larcv {
     return Image2D(std::move(res_meta),std::move(img));
   }
 
+  Image2D Image2D::crop(const BBox2D& bbox, const DistanceUnit_t unit) const
+  {
+    if(unit != _meta.unit())
+      throw larbys("Cannot crop Image2D with BBox with different length unit!");
+    
+    // Croppin region must be within the image
+    if( bbox.x1 < _meta.min_x() || bbox.y1 < _meta.min_y() ||
+	bbox.x2 > _meta.max_x() || bbox.y2 > _meta.max_y() )
+      throw larbys("Cropping region contains region outside the image!");
+    
+    size_t min_col = _meta.col(bbox.x1 + _meta.pixel_width()  / 2. );
+    size_t max_col = _meta.col(bbox.x2 - _meta.pixel_width()  / 2. );
+    size_t min_row = _meta.row(bbox.y2 - _meta.pixel_height() / 2. );
+    size_t max_row = _meta.row(bbox.y1 + _meta.pixel_height() / 2. );
+    /*
+    std::cout<<"Cropping! Requested:" << std::endl
+	     << crop_meta.dump() << std::endl
+	     <<"Original:"<<std::endl
+	     <<_meta.dump()<<std::endl;
+    
+    std::cout<<min_col<< " => " << max_col << " ... " << min_row << " => " << max_row << std::endl;
+    std::cout<<_meta.width() << " / " << _meta.cols() << " = " << _meta.pixel_width() << std::endl;
+    */
+    ImageMeta res_meta( (max_col - min_col + 1) * _meta.pixel_width(),
+			(max_row - min_row + 1) * _meta.pixel_height(),
+			(max_row - min_row + 1),
+			(max_col - min_col + 1),
+			_meta.min_x() + min_col * _meta.pixel_width(),
+			_meta.max_y() - min_row * _meta.pixel_height(),
+			_meta.plane());
+    
+    std::vector<float> img;
+    img.resize(res_meta.cols() * res_meta.rows());
+
+    size_t column_size = max_row - min_row + 1;
+    for(size_t col=min_col; col<=max_col; ++col)
+
+      memcpy(&(img[(col-min_col)*column_size]), &(_img[_meta.index(min_row,col)]), column_size * sizeof(float));
+
+    //std::cout<<"Cropped:" << std::endl << res_meta.dump()<<std::endl;
+    
+    return Image2D(std::move(res_meta),std::move(img));
+  }
+
 
   void Image2D::overlay(const Image2D& rhs, CompressionModes_t mode )
   {

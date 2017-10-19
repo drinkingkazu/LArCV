@@ -15,6 +15,7 @@
 #pragma link C++ class larcv::EmptyImageFilter+;
 #pragma link C++ class larcv::ParticleCountFilter+;
 #pragma link C++ class larcv::EventIDFilter+;
+#pragma link C++ class larcv::EmptyVoxelFilter+;
 //ADD_NEW_CLASS ... do not change this line
 #endif
 

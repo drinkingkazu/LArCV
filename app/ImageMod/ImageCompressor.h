@@ -1,9 +1,9 @@
 /**
- * \file Compressor.h
+ * \file ImageCompressor.h
  *
  * \ingroup Package_Name
  * 
- * \brief Class def header for a class Compressor
+ * \brief Class def header for a class ImageCompressor
  *
  * @author kazuhiro
  */
@@ -11,8 +11,8 @@
 /** \addtogroup Package_Name
 
     @{*/
-#ifndef __COMPRESSOR_H__
-#define __COMPRESSOR_H__
+#ifndef __IMAGECOMPRESSOR_H__
+#define __IMAGECOMPRESSOR_H__
 
 #include "Processor/ProcessBase.h"
 #include "Processor/ProcessFactory.h"
@@ -21,18 +21,18 @@ namespace larcv {
 
   /**
      \class ProcessBase
-     User defined class Compressor ... these comments are used to generate
+     User defined class ImageCompressor ... these comments are used to generate
      doxygen documentation!
   */
-  class Compressor : public ProcessBase {
+  class ImageCompressor : public ProcessBase {
 
   public:
     
     /// Default constructor
-    Compressor(const std::string name="Compressor");
+    ImageCompressor(const std::string name="ImageCompressor");
     
     /// Default destructor
-    ~Compressor(){}
+    ~ImageCompressor(){}
 
     void configure(const PSet&);
 
@@ -52,17 +52,17 @@ namespace larcv {
   };
 
   /**
-     \class larcv::CompressorFactory
-     \brief A concrete factory class for larcv::Compressor
+     \class larcv::ImageCompressorFactory
+     \brief A concrete factory class for larcv::ImageCompressor
   */
-  class CompressorProcessFactory : public ProcessFactoryBase {
+  class ImageCompressorProcessFactory : public ProcessFactoryBase {
   public:
     /// ctor
-    CompressorProcessFactory() { ProcessFactory::get().add_factory("Compressor",this); }
+    ImageCompressorProcessFactory() { ProcessFactory::get().add_factory("ImageCompressor",this); }
     /// dtor
-    ~CompressorProcessFactory() {}
+    ~ImageCompressorProcessFactory() {}
     /// creation method
-    ProcessBase* create(const std::string instance_name) { return new Compressor(instance_name); }
+    ProcessBase* create(const std::string instance_name) { return new ImageCompressor(instance_name); }
   };
 
 }

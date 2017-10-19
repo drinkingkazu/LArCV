@@ -23,13 +23,19 @@ namespace larcv {
 
   bool EmptyVoxelFilter::process(IOManager& mgr)
   {
-    auto event_voxel = (EventVoxel3D*)(mgr.get_data(kProductVoxel3D,_voxel_producer));
+    static ProducerID_t producer_id = kINVALID_SIZE;
+    if(producer_id == kINVALID_SIZE) {
+      ProducerName_t name_id("voxel3d",_voxel_producer);
+      producer_id = mgr.producer_id(name_id);
+    }
+    auto event_voxel = (VoxelSet*)(mgr.get_data(producer_id));
     if(!event_voxel) {
-      LARCV_CRITICAL() << "No EventVoxel3D found with name " << _voxel_producer << std::endl;
+      LARCV_CRITICAL() << "VoxelSet with name " << _voxel_producer << " not found..." << std::endl;
       throw larbys();
     }
+
     size_t ctr=0;
-    for(auto const& vox : event_voxel->GetVoxelSet()) {
+    for(auto const& vox : event_voxel->VoxelArray()) {
       if(vox.Value()<_min_voxel_value) continue;
       ctr++;
     }

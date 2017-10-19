@@ -55,6 +55,12 @@ namespace larcv {
     };
   }
 
+  /// Coordinate unit type
+  enum DistanceUnit_t {
+    kCM,      ///< cm scale
+    kWireTime ///< x=wire, y=time-tick scale
+  };
+
   /// Pooling type
   enum PoolType_t {
     kPoolSum,     ///< sum channels

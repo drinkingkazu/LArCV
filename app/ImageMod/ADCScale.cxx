@@ -48,8 +48,10 @@ namespace larcv {
 
   bool ADCScale::process(IOManager& mgr)
   {
-    if(_image_id == kINVALID_SIZE)
-      _image_id = mgr.producer_id(kProductImage2D,_image_producer);
+    if(_image_id == kINVALID_SIZE) {
+      ProducerName_t id("image2D",_image_producer);
+      _image_id = mgr.producer_id(id);
+    }
 
     // Smear ADCs if random gaussian is provided
     if(!_gaus_mean_v.empty()) {

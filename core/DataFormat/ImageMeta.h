@@ -95,6 +95,8 @@ namespace larcv {
     double pixel_width  () const { return (_col_count ? _width  / (double)_col_count : 0.); } 
     /// Pixel vertical size
     double pixel_height () const { return (_row_count ? _height / (double)_row_count : 0.); }
+    /// 2D length unit
+    DistanceUnit_t unit       () const { return _unit; }
 
     /// Provide 1-D array index from row and column
     size_t index( size_t row, size_t col ) const;
@@ -138,6 +140,7 @@ namespace larcv {
     size_t    _col_count;     ///< # of pixels in horizontal axis
     size_t    _row_count;     ///< # of pixels in vertical axis
     PlaneID_t _plane;         ///< unique plane ID number
+    DistanceUnit_t  _unit;
   };
 
 }

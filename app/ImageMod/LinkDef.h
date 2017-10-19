@@ -14,7 +14,7 @@
 //#pragma link C++ class larcv::ADCScale+;
 #pragma link C++ class larcv::CombineImages+;
 #pragma link C++ class larcv::SliceImages+;
-#pragma link C++ class larcv::Compressor+;
+#pragma link C++ class larcv::ImageCompressor+;
 #pragma link C++ class larcv::SegmentAna+;
 #pragma link C++ class larcv::StepDigitizer+;
 #pragma link C++ class larcv::ADCThreshold+;
@@ -28,7 +28,7 @@
 #pragma link C++ class larcv::MaskImage+;
 #pragma link C++ class larcv::SegmentMask+;
 #pragma link C++ class larcv::SegmentMaker+;
-#pragma link C++ class larcv::CropROI+;
+#pragma link C++ class larcv::CropBBox2D+;
 #pragma link C++ class larcv::ROIMask+;
 #pragma link C++ class larcv::ChannelMax+;
 #pragma link C++ class larcv::SegWeightTrackShower+;
@@ -42,7 +42,6 @@
 
 #pragma link C++ class larcv::UnionROI+;
 #pragma link C++ class larcv::VoxelCompressor+;
-#pragma link C++ class larcv::EmptyVoxelFilter+;
 //ADD_NEW_CLASS ... do not change this line
 #endif
 

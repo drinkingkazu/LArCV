@@ -20,6 +20,7 @@ namespace larcv {
       LARCV_CRITICAL() << "Length of configuration parameter array is not same!" << std::endl;
       throw larbys();
     }
+    _product_id = kINVALID_SIZE;
   }
 
   void ADCThreshold::initialize()
@@ -27,7 +28,12 @@ namespace larcv {
 
   bool ADCThreshold::process(IOManager& mgr)
   {
-    auto event_image = (EventImage2D*)(mgr.get_data(kProductImage2D,_image_producer));
+
+    if(_product_id == kINVALID_SIZE) {
+      ProducerName_t name_id("image2d",_image_producer);
+      _product_id = mgr.producer_id(name_id);
+    }
+    auto event_image = (EventImage2D*)(mgr.get_data(_product_id));
 
     std::vector<larcv::Image2D> image_v;
     event_image->Move(image_v);

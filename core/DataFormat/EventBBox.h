@@ -29,11 +29,6 @@ namespace larcv {
     
   public:
 
-    enum BBox2DUnit_t {
-      kCM, ///< cm scale
-      kWireTime ///< x=wire, y=time-tick scale
-    };
-    
     /// Default constructor
     EventBBox2D(){}
     
@@ -45,7 +40,7 @@ namespace larcv {
     { EventBase::clear(); std::vector<larcv::BBox2D>::clear(); }
 
     /// Units
-    BBox2DUnit_t unit;
+    DistanceUnit_t unit;
 
     /// Description (optional)
     std::string info;
@@ -60,8 +55,6 @@ namespace larcv {
     
   public:
 
-    enum BBox3DUnit_t { kCM };
-    
     /// Default constructor
     EventBBox3D(){}
     
@@ -73,7 +66,7 @@ namespace larcv {
     { EventBase::clear(); std::vector<larcv::BBox3D>::clear(); }
 
     /// Units
-    BBox3DUnit_t unit;
+    DistanceUnit_t unit;
 
     /// Description (optional)
     std::string info;

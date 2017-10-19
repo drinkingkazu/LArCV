@@ -47,6 +47,7 @@ namespace larcv {
     std::vector<float> _min_adc_v;
     std::vector<float> _max_adc_v;
     std::vector<float> _buffer;
+    ProducerID_t _product_id;
   };
 
   /**

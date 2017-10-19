@@ -1,46 +1,40 @@
-#ifndef __CROPROI_CXX__
-#define __CROPROI_CXX__
+#ifndef __CROPBBox2D_CXX__
+#define __CROPBBox2D_CXX__
 
-#include "CropROI.h"
-#include "DataFormat/EventROI.h"
+#include "CropBBox2D.h"
+#include "DataFormat/EventBBox.h"
 #include "DataFormat/EventImage2D.h"
 namespace larcv {
 
-  static CropROIProcessFactory __global_CropROIProcessFactory__;
+  static CropBBox2DProcessFactory __global_CropBBox2DProcessFactory__;
 
-  CropROI::CropROI(const std::string name)
+  CropBBox2D::CropBBox2D(const std::string name)
     : ProcessBase(name)
   {}
     
-  void CropROI::configure(const PSet& cfg)
+  void CropBBox2D::configure(const PSet& cfg)
   {
-    _roi_producer = cfg.get<std::string>("ROIProducer");
+    _bbox_producer = cfg.get<std::string>("BBox2DProducer");
     _input_producer = cfg.get<std::string>("InputProducer");
     _output_producer = cfg.get<std::string>("OutputProducer");
     _image_idx = cfg.get<std::vector<size_t> >("ImageIndex");
-    _roi_idx = cfg.get<size_t>("ROIIndex",0);
+    _bbox_idx = cfg.get<size_t>("BBox2DIndex",0);
   }
 
-  void CropROI::initialize()
+  void CropBBox2D::initialize()
   {}
 
-  bool CropROI::process(IOManager& mgr)
+  bool CropBBox2D::process(IOManager& mgr)
   {
-    auto input_image = (EventImage2D*)(mgr.get_data(kProductImage2D,_input_producer));
+    auto input_image  = (EventImage2D*)(mgr.get_data("image2d",_input_producer));
     if(!input_image) {
       LARCV_CRITICAL() << "No Image2D found with a name: " << _input_producer << std::endl;
       throw larbys();
     }
-
-    auto output_image = (EventImage2D*)(mgr.get_data(kProductImage2D,_output_producer));
+    
+    auto output_image = (EventImage2D*)(mgr.get_data("image2d",_output_producer));
     if(!output_image) {
       LARCV_CRITICAL() << "No Image2D found with a name: " << _output_producer << std::endl;
-      throw larbys();
-    }
-
-    auto event_roi = (EventROI*)(mgr.get_data(kProductROI,_roi_producer));
-    if(!event_roi) {
-      LARCV_CRITICAL() << "No ROI found with a name: " << _roi_producer << std::endl;
       throw larbys();
     }
 
@@ -52,11 +46,11 @@ namespace larcv {
 	throw larbys();
       }
     }
-    
-    auto const& roi_v = event_roi->ROIArray();
 
-    if(roi_v.size() <= _roi_idx) {
-      LARCV_CRITICAL() << "ROI index " << _roi_idx << " not found!" << std::endl;
+    auto const& bbox_v = mgr.get_data<larcv::EventBBox2D>(_bbox_producer);    
+
+    if(bbox_v.size() <= _bbox_idx) {
+      LARCV_CRITICAL() << "BBOX index " << _bbox_idx << " not found!" << std::endl;
       throw larbys();
     }
 
@@ -72,22 +66,16 @@ namespace larcv {
 	image_v.push_back(tmp_v[idx]);
     }
     
-    auto const& bb_v = roi_v[_roi_idx].BB();
-    if(bb_v.size() < _image_idx.size()) {
-      LARCV_CRITICAL() << "Not enough bounding box!" << std::endl;
-      throw larbys();
-    }
-
     // Now process
     for(size_t idx=0; idx<_image_idx.size(); ++idx) {
-      auto const& bb = bb_v[idx];
-      image_v[idx] = image_v[idx].crop(bb);
+      auto const& bbox = bbox_v[idx];
+      image_v[idx] = image_v[idx].crop(bbox,bbox_v.unit);
     }
     output_image->Emplace(std::move(image_v));
     return true;
   }
 
-  void CropROI::finalize()
+  void CropBBox2D::finalize()
   {}
 
 }

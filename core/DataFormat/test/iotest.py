@@ -42,7 +42,7 @@ for idx in xrange(NUM_EVENT):
 
         o.get_data(product_names[name_idx],"product_type%02d" % name_idx)
 
-    o.set_id(0,0,idx)
+    o.set_id(0,idx)
     o.save_entry()
 
 o.finalize()
