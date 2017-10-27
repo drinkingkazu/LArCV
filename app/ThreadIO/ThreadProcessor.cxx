@@ -446,6 +446,8 @@ namespace larcv {
 	  BatchDataStorageFactory<short>::get_writeable().make_storage(name,_num_batch_storage); break;
 	case BatchDataType_t::kBatchDataInt:
 	  BatchDataStorageFactory<int>::get_writeable().make_storage(name,_num_batch_storage); break;
+	case BatchDataType_t::kBatchDataLong:
+	  BatchDataStorageFactory<long>::get_writeable().make_storage(name,_num_batch_storage); break;
 	case BatchDataType_t::kBatchDataFloat:
 	  BatchDataStorageFactory<float>::get_writeable().make_storage(name,_num_batch_storage); break;
 	case BatchDataType_t::kBatchDataDouble:
@@ -565,6 +567,11 @@ namespace larcv {
 	  = &(BatchDataStorageFactory<int>::get_writeable().get_storage_writeable(name).get_batch_writeable(storage_id));
 	batch_state = ((BatchFillerTemplate<int>*)proc_ptr)->_batch_data_ptr->state();
 	break;
+      case BatchDataType_t::kBatchDataLong:
+	((BatchFillerTemplate<long>*)proc_ptr)->_batch_data_ptr
+	  = &(BatchDataStorageFactory<long>::get_writeable().get_storage_writeable(name).get_batch_writeable(storage_id));
+	batch_state = ((BatchFillerTemplate<long>*)proc_ptr)->_batch_data_ptr->state();
+	break;
       case BatchDataType_t::kBatchDataFloat:
 	((BatchFillerTemplate<float>*)proc_ptr)->_batch_data_ptr
 	  = &(BatchDataStorageFactory<float>::get_writeable().get_storage_writeable(name).get_batch_writeable(storage_id));
@@ -645,6 +652,8 @@ namespace larcv {
 	((BatchFillerTemplate<short>*)ptr)->batch_begin(); break;
       case BatchDataType_t::kBatchDataInt:
 	((BatchFillerTemplate<int>*)ptr)->batch_begin(); break;
+      case BatchDataType_t::kBatchDataLong:
+	((BatchFillerTemplate<long>*)ptr)->batch_begin(); break;
       case BatchDataType_t::kBatchDataFloat:
 	((BatchFillerTemplate<float>*)ptr)->batch_begin(); break;
       case BatchDataType_t::kBatchDataDouble:
@@ -704,6 +713,8 @@ namespace larcv {
 	((BatchFillerTemplate<short>*)ptr)->batch_end(); break;
       case BatchDataType_t::kBatchDataInt:
 	((BatchFillerTemplate<int>*)ptr)->batch_end(); break;
+      case BatchDataType_t::kBatchDataLong:
+	((BatchFillerTemplate<long>*)ptr)->batch_end(); break;
       case BatchDataType_t::kBatchDataFloat:
 	((BatchFillerTemplate<float>*)ptr)->batch_end(); break;
       case BatchDataType_t::kBatchDataDouble:

@@ -59,8 +59,9 @@ class batch_pydata(object):
       self._time_copy = time.time() - ctime
 
       ctime = time.time()
+      #self._npy_data = self._npy_data.reshape(self._dim_data[0], self.batch_data_size()/self._dim_data[0]).astype(np.float32)
       self._npy_data = self._npy_data.reshape(self._dim_data[0], self.batch_data_size()/self._dim_data[0]).astype(np.float32)
-      self.time_data_conv = time.time() - ctime         
+      self.time_data_conv = time.time() - ctime
 
       return
 

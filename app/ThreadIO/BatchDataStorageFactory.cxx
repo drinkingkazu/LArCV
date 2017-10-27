@@ -6,6 +6,7 @@
 template<> larcv::BatchDataStorageFactory<char>*   larcv::BatchDataStorageFactory<char>::_me   = nullptr;
 template<> larcv::BatchDataStorageFactory<short>*  larcv::BatchDataStorageFactory<short>::_me  = nullptr;
 template<> larcv::BatchDataStorageFactory<int>*    larcv::BatchDataStorageFactory<int>::_me    = nullptr;
+template<> larcv::BatchDataStorageFactory<long>*    larcv::BatchDataStorageFactory<long>::_me  = nullptr;
 template<> larcv::BatchDataStorageFactory<float>*  larcv::BatchDataStorageFactory<float>::_me  = nullptr;
 template<> larcv::BatchDataStorageFactory<double>* larcv::BatchDataStorageFactory<double>::_me = nullptr;
 template<> larcv::BatchDataStorageFactory<std::string>* larcv::BatchDataStorageFactory<std::string>::_me = nullptr;
@@ -13,6 +14,7 @@ template<> larcv::BatchDataStorageFactory<std::string>* larcv::BatchDataStorageF
 template class larcv::BatchDataStorageFactory<char>;
 template class larcv::BatchDataStorageFactory<short>;
 template class larcv::BatchDataStorageFactory<int>;
+template class larcv::BatchDataStorageFactory<long>;
 template class larcv::BatchDataStorageFactory<float>;
 template class larcv::BatchDataStorageFactory<double>;
 template class larcv::BatchDataStorageFactory<std::string>;

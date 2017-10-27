@@ -114,6 +114,7 @@ namespace larcv {
 template class larcv::BatchData<char>;
 template class larcv::BatchData<short>;
 template class larcv::BatchData<int>;
+template class larcv::BatchData<long>;
 template class larcv::BatchData<float>;
 template class larcv::BatchData<double>;
 template class larcv::BatchData<std::string>;

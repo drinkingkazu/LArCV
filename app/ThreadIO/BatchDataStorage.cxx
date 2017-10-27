@@ -97,6 +97,7 @@ namespace larcv {
 template class larcv::BatchDataStorage<char>;
 template class larcv::BatchDataStorage<short>;
 template class larcv::BatchDataStorage<int>;
+template class larcv::BatchDataStorage<long>;
 template class larcv::BatchDataStorage<float>;
 template class larcv::BatchDataStorage<double>;
 template class larcv::BatchDataStorage<std::string>;

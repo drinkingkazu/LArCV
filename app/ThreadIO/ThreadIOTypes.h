@@ -17,6 +17,7 @@ namespace larcv {
     kBatchDataChar,
     kBatchDataShort,
     kBatchDataInt,
+    kBatchDataLong,
     kBatchDataFloat,
     kBatchDataDouble,
     kBatchDataString
