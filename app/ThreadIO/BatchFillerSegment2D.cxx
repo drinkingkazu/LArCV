@@ -1,22 +1,22 @@
-#ifndef __BatchFillerImage2D_CXX__
-#define __BatchFillerImage2D_CXX__
+#ifndef __BatchFillerSegment2D_CXX__
+#define __BatchFillerSegment2D_CXX__
 
-#include "BatchFillerImage2D.h"
+#include "BatchFillerSegment2D.h"
 #include "DataFormat/UtilFunc.h"
 
 #include <random>
 
 namespace larcv {
 
-  static BatchFillerImage2DProcessFactory __global_BatchFillerImage2DProcessFactory__;
+  static BatchFillerSegment2DProcessFactory __global_BatchFillerSegment2DProcessFactory__;
 
-  BatchFillerImage2D::BatchFillerImage2D(const std::string name)
+  BatchFillerSegment2D::BatchFillerSegment2D(const std::string name)
     : BatchFillerTemplate<float>(name)
     , _slice_v()
     , _max_ch(0)
   {}
 
-  void BatchFillerImage2D::configure(const PSet& cfg)
+  void BatchFillerSegment2D::configure(const PSet& cfg)
   {
     LARCV_DEBUG() << "start" << std::endl;
     _caffe_mode = cfg.get<bool>("CaffeMode");
@@ -30,19 +30,52 @@ namespace larcv {
     if(_crop_image)
       _cropper.configure(cfg);
 
+    auto type_def = cfg.get<std::vector<unsigned short> >("ClassTypeDef");
+    if(type_def.size() != kROITypeMax) {
+      LARCV_CRITICAL() << "ClassTypeDef length is " << type_def.size()
+                       << " but it needs to be length kROITypeMax (" << kROITypeMax << ")!" << std::endl;
+      throw larbys();
+    }
+    for(auto const& v : type_def) {
+      if(v >= kROITypeMax) {
+        LARCV_CRITICAL() << "ClassTypeDef contains invalid value (" << v << ") for ROIType_t!" << std::endl;
+        throw larbys();
+      }
+    }
+    auto type_to_class = cfg.get<std::vector<unsigned short> >("ClassTypeList");
+    if(type_to_class.empty()) {
+      LARCV_CRITICAL() << "ClassTypeList needed to define classes!" << std::endl;
+      throw larbys();
+    }
+    _roitype_to_class.clear();
+    _roitype_to_class.resize(kROITypeMax,kINVALID_SIZE);
+    _roitype_to_class[larcv::kROIUnknown] = 0;
+    for(size_t i=0; i<type_to_class.size(); ++i) {
+      auto const& type = type_to_class[i];
+      if(type >= kROITypeMax) {
+        LARCV_CRITICAL() << "ClassTypeList contains type " << type << " which is not a valid ROIType_t!" << std::endl;
+        throw larbys();
+      }
+      _roitype_to_class[type] = i+1;
+    }
+    for(size_t i=0; i<_roitype_to_class.size(); ++i) {
+      if(_roitype_to_class[i] != kINVALID_SIZE) continue;
+      _roitype_to_class[i] = _roitype_to_class[type_def[i]];
+    }
+
     LARCV_DEBUG() << "done" << std::endl;
   }
 
-  void BatchFillerImage2D::initialize()
+  void BatchFillerSegment2D::initialize()
   {}
 
-  void BatchFillerImage2D::_batch_begin_()
+  void BatchFillerSegment2D::_batch_begin_()
   {
     _mirrored.clear();
     _mirrored.reserve(batch_size());
   }
 
-  void BatchFillerImage2D::_batch_end_()
+  void BatchFillerSegment2D::_batch_end_()
   {
     if(logger().level() <= msg::kINFO) {
       LARCV_INFO() << "Total data size: " << batch_data().data_size() << std::endl;
@@ -54,10 +87,10 @@ namespace larcv {
     }
   }
 
-  void BatchFillerImage2D::finalize()
+  void BatchFillerSegment2D::finalize()
   { _entry_data.clear(); }
 
-  size_t BatchFillerImage2D::set_image_size(const EventImage2D* image_data)
+  size_t BatchFillerSegment2D::set_image_size(const EventImage2D* image_data)
   {
     auto const& image_v = image_data->Image2DArray();
     if(image_v.empty()) {
@@ -106,7 +139,7 @@ namespace larcv {
     return (_rows * _cols * _num_channels);
   }
 
-  void BatchFillerImage2D::assert_dimension(const EventImage2D* image_data) const
+  void BatchFillerSegment2D::assert_dimension(const EventImage2D* image_data) const
   {
     auto const& image_v = image_data->Image2DArray();
     if(_rows == kINVALID_SIZE) {
@@ -155,7 +188,7 @@ namespace larcv {
     }
   }
 
-  bool BatchFillerImage2D::process(IOManager& mgr) 
+  bool BatchFillerSegment2D::process(IOManager& mgr) 
   {
     LARCV_DEBUG() <<"start"<<std::endl;
     auto image_data = (EventImage2D*)(mgr.get_data(kProductImage2D,_image_producer));
@@ -214,29 +247,28 @@ namespace larcv {
         auto const& input_image = (_crop_image ? _cropper.crop(input_img2d) : input_img2d.as_vector());
 
         size_t target_idx = ch * _rows * _cols;
+	size_t index = 0;
+	size_t source_index = 0;
         for(size_t caffe_idx=0; caffe_idx < (_rows*_cols); ++caffe_idx) {
+	  
+	  if(mirror_image) 
+	    source_index = _mirror_caffe_idx_to_img_idx[caffe_idx];
+	  else
+	    source_index = _caffe_idx_to_img_idx[caffe_idx];
+	  
+	  if(_caffe_mode)
+	    index = target_idx; 
+	  else
+	    index = caffe_idx * _num_channels + ch;
 
-	  if(_caffe_mode) {
-	    
-	    if(mirror_image)
-	      
-	      _entry_data[target_idx] = input_image[_mirror_caffe_idx_to_img_idx[caffe_idx]];
-	    
-	    else
-	      
-	      _entry_data[target_idx] = input_image[_caffe_idx_to_img_idx[caffe_idx]];
-	    
-	  }else{
-	    
-	    if(mirror_image)
-	      
-	      _entry_data[caffe_idx * _num_channels + ch] = input_image[_mirror_caffe_idx_to_img_idx[caffe_idx]];
-	    
-	    else
-	      
-	      _entry_data[caffe_idx * _num_channels + ch] = input_image[_caffe_idx_to_img_idx[caffe_idx]];		
-	    
+	  size_t class_value = _roitype_to_class[(size_t)(input_image[source_index])];
+	  if(class_value == kINVALID_SIZE) {
+	    LARCV_CRITICAL() << "Found invalid ROI type in the label image: " << input_image[source_index] << std::endl;
+	    throw larbys();
 	  }
+
+	  _entry_data[index] = (float)class_value;
+
 	  ++target_idx;
         }
     }
